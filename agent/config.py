@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     anthropic_model: str = "claude-sonnet-4-20250514"
 
     # 数据库
-    database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/skill_agent"
+    database_url: str = "sqlite:///./skill_agent.db"
 
     # Redis
     redis_url: str = "redis://localhost:6379/0"

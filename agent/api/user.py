@@ -1,10 +1,14 @@
 """用户系统 API"""
 
+import hashlib
+import hmac
+import json
+import base64
+import time
 from datetime import datetime, timedelta
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from jose import jwt
 
 from config import get_settings
 from models.database import (
@@ -32,11 +36,18 @@ class TokenResponse(BaseModel):
     nickname: str
 
 
+def _b64encode(data: bytes) -> str:
+    return base64.urlsafe_b64encode(data).rstrip(b"=").decode()
+
+
 def create_token(user_id: int) -> str:
-    """生成JWT Token"""
-    expire = datetime.now() + timedelta(minutes=settings.access_token_expire_minutes)
-    payload = {"sub": str(user_id), "exp": expire}
-    return jwt.encode(payload, settings.secret_key, algorithm="HS256")
+    """生成简易JWT Token (HS256)"""
+    expire = int(time.time()) + settings.access_token_expire_minutes * 60
+    header = _b64encode(json.dumps({"alg": "HS256", "typ": "JWT"}).encode())
+    payload = _b64encode(json.dumps({"sub": str(user_id), "exp": expire}).encode())
+    msg = f"{header}.{payload}"
+    sig = hmac.new(settings.secret_key.encode(), msg.encode(), hashlib.sha256).digest()
+    return f"{msg}.{_b64encode(sig)}"
 
 
 @router.post("/register", response_model=TokenResponse)
