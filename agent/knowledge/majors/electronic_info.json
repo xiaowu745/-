@@ -1,0 +1,68 @@
+{
+  "id": "electronic_info",
+  "name": "电子信息工程",
+  "category": "电子信息",
+  "overview": "培养具备电子技术和信息系统的研发、设计与应用能力的工程技术人才",
+  "core_courses": [
+    "电路原理",
+    "模拟电子技术",
+    "数字电子技术",
+    "信号与系统",
+    "数字信号处理",
+    "通信原理",
+    "电磁场与电磁波",
+    "单片机原理与应用",
+    "C语言/Python编程",
+    "EDA技术"
+  ],
+  "career_directions": [
+    {
+      "id": "hardware_engineer",
+      "name": "硬件工程师",
+      "description": "电路板设计、PCB Layout、硬件调试",
+      "salary": {"entry": "8000-12000", "mid": "15000-25000", "senior": "25000-40000"},
+      "traits": ["技术门槛高", "大厂需求大", "薪资高"],
+      "required_skills": ["原理图设计", "PCB Layout", "信号完整性分析", "EMC设计"],
+      "recommended_certs": ["无硬性要求，作品集为主"]
+    },
+    {
+      "id": "embedded_developer",
+      "name": "嵌入式软件工程师",
+      "description": "给芯片/MCU写程序，让硬件'活起来'",
+      "salary": {"entry": "8000-12000", "mid": "15000-25000", "senior": "25000-40000+"},
+      "traits": ["需求大", "薪资天花板高", "软硬结合"],
+      "required_skills": ["C/C++精通", "STM32/ARM开发", "RTOS", "驱动开发", "调试工具使用"],
+      "recommended_certs": ["无需考证，项目+GitHub为主"]
+    },
+    {
+      "id": "rf_engineer",
+      "name": "射频工程师",
+      "description": "无线通信、天线设计、5G基站相关",
+      "salary": {"entry": "10000-15000", "mid": "18000-30000", "senior": "30000-50000"},
+      "traits": ["人才稀缺", "薪资最高", "学习曲线陡"],
+      "required_skills": ["射频电路设计", "天线设计", "ADS/HFSS仿真", "网络分析仪使用"],
+      "recommended_certs": ["无硬性要求"]
+    },
+    {
+      "id": "electronics_manufacturing",
+      "name": "电子制造工程师",
+      "description": "SMT工艺、产线管理、品质管控",
+      "salary": {"entry": "6000-8000", "mid": "10000-15000", "senior": "15000-25000"},
+      "traits": ["稳定", "需求持续", "入行门槛相对低"],
+      "required_skills": ["SMT工艺", "回流焊/波峰焊", "AOI检测", "品质管理(SPC/FMEA)"],
+      "recommended_certs": ["品质相关认证(六西格玛等)"]
+    }
+  ],
+  "skill_requirements": {
+    "theory": ["模电数电", "信号与系统", "通信原理", "电磁场", "半导体物理基础"],
+    "programming": ["C/C++", "Python", "Verilog/VHDL(数字方向)", "MATLAB"],
+    "hardware": ["电路焊接", "示波器/万用表使用", "PCB制作", "元器件识别与选型", "电路调试"],
+    "tools": ["Altium Designer/立创EDA", "Keil/IAR", "MATLAB/Simulink", "ADS(射频)", "示波器/逻辑分析仪"],
+    "project": ["电子设计竞赛作品", "嵌入式系统开发", "PCB设计与制作", "信号处理应用"]
+  },
+  "cert_roadmap": [
+    {"stage": "大二", "certs": ["软考-信息处理技术员(可选)"], "cost": "70元", "priority": "可选"},
+    {"stage": "大三", "certs": ["软考-嵌入式系统设计师", "华为HCIA-IoT(物联网方向)"], "cost": "70元/500元", "priority": "推荐"},
+    {"stage": "毕业后", "certs": ["根据方向选择：硬件不需证书，射频不需证书，嵌入式看项目"], "cost": "-", "priority": "项目作品集优先"}
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "version": "1.0",
+  "description": "深度评估追问策略 - Agent根据快速自评结果选择追问方向",
+  "strategies": [
+    {
+      "id": "S01",
+      "trigger": "theory_score >= 3 AND hardware_score <= 2",
+      "hypothesis": "理论强但动手弱——典型的'书本型学生'",
+      "probing_questions": [
+        "你平时学习专业知识是看书/看视频为主，还是会自己动手验证？",
+        "你做过的实验课，是自己独立完成的还是参考同学/教程完成的？",
+        "如果现在给你一台交换机/PLC/开发板，让你不看教程做一个小任务，你有把握吗？"
+      ],
+      "scoring_adjustment": {
+        "if_confirmed": "保持当前评分，标记'需要增加实操训练'",
+        "if_denied": "上调hardware得分1级，可能是自评偏保守"
+      },
+      "recommendation": "建议优先增加实训/实操练习，理论基础好是优势，但需要转化为动手能力"
+    },
+    {
+      "id": "S02",
+      "trigger": "hardware_score >= 3 AND theory_score <= 2",
+      "hypothesis": "动手能力强但理论薄弱——典型的'实践派'",
+      "probing_questions": [
+        "你在做项目/实验的时候，遇到原理性问题会怎么解决？",
+        "举个例子：你能解释一下你做过的某个项目里，某个关键步骤为什么要这样做吗？",
+        "你觉得自己是'知其然'还是'知其所以然'？"
+      ],
+      "scoring_adjustment": {
+        "if_confirmed": "保持当前评分，标记'需要补充理论知识'",
+        "if_denied": "上调theory得分1级"
+      },
+      "recommendation": "动手能力好是很大的优势，建议回过头补一下关键理论，面试时能讲清原理会加分很多"
+    },
+    {
+      "id": "S03",
+      "trigger": "project_score <= 1",
+      "hypothesis": "完全没有项目经验——需要重点引导",
+      "probing_questions": [
+        "你有没有自己特别想做的技术项目？或者看到别人做的项目很羡慕？",
+        "你觉得你做不了项目的主要原因是什么？是不知道做什么，还是不知道怎么开始？",
+        "你愿意花2-4周时间参加一个实训营来做一个完整项目吗？"
+      ],
+      "scoring_adjustment": {
+        "no_adjustment": true
+      },
+      "recommendation": "项目经验是求职的核心竞争力。建议立即开始做一个小项目，不需要复杂，但要能从头到尾跑通"
+    },
+    {
+      "id": "S04",
+      "trigger": "programming_score >= 3 AND tools_score <= 2",
+      "hypothesis": "编程能力可以但行业工具不熟——需要针对性学习",
+      "probing_questions": [
+        "你写代码主要用什么IDE？有没有用过行业专用的工具（如eNSP、TIA Portal、Keil等）？",
+        "你知道你想去的岗位日常主要用哪些工具吗？",
+        "有没有尝试过在自己电脑上安装和使用行业工具？"
+      ],
+      "scoring_adjustment": {
+        "no_adjustment": true
+      },
+      "recommendation": "编程能力是通用底子，很好。接下来需要针对目标方向学习行业工具，这些工具企业是天天用的"
+    },
+    {
+      "id": "S05",
+      "trigger": "overall_score >= 70",
+      "hypothesis": "整体水平较好——需要定位优化方向",
+      "probing_questions": [
+        "你目前最明确的就业方向是什么？还是还在选择中？",
+        "你有没有投过简历或者参加过面试？结果怎么样？",
+        "你觉得自己距离理想岗位还差什么？",
+        "你有没有考过相关的认证证书？"
+      ],
+      "scoring_adjustment": {
+        "no_adjustment": true
+      },
+      "recommendation": "基础不错！关键是确定方向后深扎下去，拿到对口证书+做出有说服力的项目"
+    },
+    {
+      "id": "S06",
+      "trigger": "overall_score <= 30",
+      "hypothesis": "整体水平较弱——需要建立信心和明确起步路径",
+      "probing_questions": [
+        "你对自己的专业有兴趣吗？还是当初不太了解就选了？",
+        "你现在大几？你觉得还有多少时间可以提升？",
+        "你有没有认识的学长学姐已经就业了？他们做什么方向？",
+        "如果有人手把手带你做一个项目，你愿意投入时间学吗？"
+      ],
+      "scoring_adjustment": {
+        "no_adjustment": true
+      },
+      "recommendation": "现在开始完全来得及。关键是选定一个方向，找到学习资源，一步一步来。不要被'大而全'的课程体系吓到"
+    }
+  ],
+  "scenario_questions": {
+    "network_engineering": [
+      {
+        "id": "SN01",
+        "scenario": "一家公司有3个部门（行政/技术/财务），共40台电脑，要求部门之间不能互访但都能上外网。请说说你的网络设计思路。",
+        "evaluation_criteria": {
+          "L1": "不知道从何入手",
+          "L2": "知道要用VLAN隔离但说不清具体怎么做",
+          "L3": "能说出VLAN划分+三层交换/路由器做ACL+NAT上网的完整思路",
+          "L4": "能给出IP规划、VLAN编号、设备选型、ACL规则等具体方案"
+        }
+      },
+      {
+        "id": "SN02",
+        "scenario": "一台交换机上的某个VLAN里的所有用户突然上不了网，其他VLAN正常。你怎么排查？",
+        "evaluation_criteria": {
+          "L1": "不知道怎么排查",
+          "L2": "知道要看配置但不知道具体看什么",
+          "L3": "能按层次排查：物理层(线缆)→数据链路层(VLAN配置)→网络层(网关/路由)→应用层",
+          "L4": "能给出完整的排查流程，包括具体命令(show vlan/show ip route/ping等)"
+        }
+      }
+    ],
+    "automation": [
+      {
+        "id": "SA01",
+        "scenario": "设计一个自动装箱系统：传送带将产品送到指定位置，机械臂抓取放入箱中，满4个后箱子移走。请说说你的PLC控制思路。",
+        "evaluation_criteria": {
+          "L1": "不知道从何入手",
+          "L2": "知道要用传感器检测+PLC控制，但说不清具体逻辑",
+          "L3": "能说出传感器选型(光电/接近)、输入输出点分配、基本控制流程",
+          "L4": "能给出I/O分配表、控制流程图、关键梯形图逻辑"
+        }
+      }
+    ],
+    "electronic_info": [
+      {
+        "id": "SE01",
+        "scenario": "设计一个LED呼吸灯：用STM32控制LED从暗到亮再从亮到暗循环。请说说你的实现思路。",
+        "evaluation_criteria": {
+          "L1": "不知道怎么做",
+          "L2": "知道要用PWM但说不清怎么配置",
+          "L3": "能说出使用定时器产生PWM、逐步改变占空比的思路",
+          "L4": "能给出具体的定时器配置、PWM占空比变化算法、甚至示例代码"
+        }
+      }
+    ],
+    "iot": [
+      {
+        "id": "SI01",
+        "scenario": "做一个温湿度监控系统：传感器采集数据，通过WiFi上传到云平台，手机可以查看。请说说你的技术方案。",
+        "evaluation_criteria": {
+          "L1": "不知道从何入手",
+          "L2": "知道要用DHT11+WiFi模块，但不清楚怎么上云",
+          "L3": "能说出 传感器选型→MCU读取→WiFi连接→MQTT上报→云平台→手机查看 的完整链路",
+          "L4": "能给出具体的硬件选型、协议选择(MQTT/HTTP)、云平台选择、数据格式设计"
+        }
+      }
+    ]
+  }
+}

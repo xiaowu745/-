@@ -1,0 +1,333 @@
+{
+  "version": "1.0",
+  "description": "快速自评题库 - 按专业分组，每个专业20题，覆盖6个维度",
+  "common_questions": [
+    {
+      "id": "C01",
+      "dimension": "theory",
+      "question": "关于计算机网络，以下哪个最符合你的现状？",
+      "options": [
+        {"text": "知道什么是IP地址，但OSI七层模型记不全", "score": 1},
+        {"text": "能说清TCP/IP协议族，知道常见协议的作用", "score": 2},
+        {"text": "理解路由协议工作原理，能分析网络架构", "score": 3},
+        {"text": "能独立设计企业级网络方案，考虑冗余和安全", "score": 4}
+      ],
+      "applicable_majors": ["network_engineering", "computer_science", "iot"]
+    },
+    {
+      "id": "C02",
+      "dimension": "theory",
+      "question": "关于电路基础（模电/数电），以下哪个最符合你？",
+      "options": [
+        {"text": "学过但基本还给老师了，看电路图比较吃力", "score": 1},
+        {"text": "能看懂基本电路图，知道常用元器件的功能", "score": 2},
+        {"text": "能分析中等复杂度的电路，理解信号流向", "score": 3},
+        {"text": "能自己设计功能电路并计算参数", "score": 4}
+      ],
+      "applicable_majors": ["electronic_info", "automation", "electrical", "iot"]
+    },
+    {
+      "id": "C03",
+      "dimension": "programming",
+      "question": "关于C语言编程，以下哪个最符合你？",
+      "options": [
+        {"text": "学过语法但写代码经常报错，调试困难", "score": 1},
+        {"text": "能独立完成课程实验（如排序、链表），但超过300行就吃力", "score": 2},
+        {"text": "做过1-2个完整小项目，能熟练使用指针和结构体", "score": 3},
+        {"text": "参加过编程竞赛/写过嵌入式项目/贡献过开源代码", "score": 4}
+      ],
+      "applicable_majors": ["all"]
+    },
+    {
+      "id": "C04",
+      "dimension": "programming",
+      "question": "关于Python编程，以下哪个最符合你？",
+      "options": [
+        {"text": "没学过/刚开始学，能写print和for循环", "score": 1},
+        {"text": "能写简单脚本处理数据，用过几个常用库", "score": 2},
+        {"text": "做过完整项目（爬虫/数据分析/Web），理解面向对象", "score": 3},
+        {"text": "熟练使用多个框架，能写自动化工具或后端服务", "score": 4}
+      ],
+      "applicable_majors": ["all"]
+    },
+    {
+      "id": "C05",
+      "dimension": "hardware",
+      "question": "关于动手实操，以下哪个最符合你？",
+      "options": [
+        {"text": "基本没怎么动过手，实验课也是跟着做完就忘", "score": 1},
+        {"text": "能按照教程完成实验，但脱离教程就不太行", "score": 2},
+        {"text": "能独立完成实训项目，会使用常用测试仪器", "score": 3},
+        {"text": "自己做过完整的硬件/网络/系统项目，能排查各种故障", "score": 4}
+      ],
+      "applicable_majors": ["all"]
+    },
+    {
+      "id": "C06",
+      "dimension": "tools",
+      "question": "关于Linux操作系统，以下哪个最符合你？",
+      "options": [
+        {"text": "没用过/只知道有这个东西", "score": 1},
+        {"text": "装过虚拟机，会基本命令(ls/cd/mkdir)", "score": 2},
+        {"text": "能在Linux下编译程序、配置服务、写Shell脚本", "score": 3},
+        {"text": "熟练使用Linux做开发/运维，理解系统原理", "score": 4}
+      ],
+      "applicable_majors": ["all"]
+    },
+    {
+      "id": "C07",
+      "dimension": "project",
+      "question": "关于项目经验，以下哪个最符合你？",
+      "options": [
+        {"text": "只做过课程作业，没有独立完整的项目", "score": 1},
+        {"text": "参加过课程设计或实训，做过模块级别的工作", "score": 2},
+        {"text": "独立完成过1-2个完整项目，能从头到尾说清楚", "score": 3},
+        {"text": "做过3个以上项目 / 参加过竞赛并获奖 / 有实习项目经验", "score": 4}
+      ],
+      "applicable_majors": ["all"]
+    },
+    {
+      "id": "C08",
+      "dimension": "project",
+      "question": "你写过简历吗？简历上的项目经历情况？",
+      "options": [
+        {"text": "还没写过简历，不知道该写什么", "score": 1},
+        {"text": "有简历，但项目经历只有课程设计", "score": 2},
+        {"text": "简历上有1-2个拿得出手的项目，能讲清技术细节", "score": 3},
+        {"text": "简历充实，有项目+实习+竞赛，面试聊技术不慌", "score": 4}
+      ],
+      "applicable_majors": ["all"]
+    },
+    {
+      "id": "C09",
+      "dimension": "soft_skill",
+      "question": "关于团队协作和沟通，以下哪个最符合你？",
+      "options": [
+        {"text": "不太善于表达技术想法，团队合作中偏被动", "score": 1},
+        {"text": "能在团队中完成分配的任务，有基本的沟通能力", "score": 2},
+        {"text": "能主动协调团队工作，清楚表达技术方案", "score": 3},
+        {"text": "有带队经验，能做技术汇报和方案讲解", "score": 4}
+      ],
+      "applicable_majors": ["all"]
+    },
+    {
+      "id": "C10",
+      "dimension": "soft_skill",
+      "question": "关于技术文档写作，以下哪个最符合你？",
+      "options": [
+        {"text": "实验报告都写得很痛苦，格式经常不规范", "score": 1},
+        {"text": "能写出结构清楚的实验报告和课程设计文档", "score": 2},
+        {"text": "能写技术方案文档，包括需求分析、系统设计、测试报告", "score": 3},
+        {"text": "写过正式的项目文档/技术博客/投过论文", "score": 4}
+      ],
+      "applicable_majors": ["all"]
+    }
+  ],
+  "network_engineering_questions": [
+    {
+      "id": "N01",
+      "dimension": "theory",
+      "question": "关于路由协议(OSPF/BGP)，以下哪个最符合你？",
+      "options": [
+        {"text": "知道有这些协议，但说不清工作原理", "score": 1},
+        {"text": "理解OSPF的基本工作过程(邻居建立/LSA/SPF)", "score": 2},
+        {"text": "能配置多区域OSPF，理解BGP的基本属性", "score": 3},
+        {"text": "能设计复杂的路由策略，做路由优化和故障排查", "score": 4}
+      ]
+    },
+    {
+      "id": "N02",
+      "dimension": "theory",
+      "question": "关于子网划分和IP地址规划，以下哪个最符合你？",
+      "options": [
+        {"text": "知道A/B/C类地址，但手算子网经常出错", "score": 1},
+        {"text": "能正确做等长子网划分，算出网络地址和广播地址", "score": 2},
+        {"text": "会VLSM变长子网划分，能做中小型网络的IP规划", "score": 3},
+        {"text": "能做企业级IP地址规划方案，考虑扩展性和汇总", "score": 4}
+      ]
+    },
+    {
+      "id": "N03",
+      "dimension": "hardware",
+      "question": "关于综合布线（做网线/光纤），以下哪个最符合你？",
+      "options": [
+        {"text": "没做过水晶头，不知道T568A/T568B是什么", "score": 1},
+        {"text": "做过水晶头但成功率不高，没接过配线架", "score": 2},
+        {"text": "能熟练制作水晶头(成功率90%+)，会配线架端接", "score": 3},
+        {"text": "会光纤熔接，能独立完成综合布线项目的施工和测试", "score": 4}
+      ]
+    },
+    {
+      "id": "N04",
+      "dimension": "hardware",
+      "question": "关于网络设备操作，以下哪个最符合你？",
+      "options": [
+        {"text": "只在模拟器上做过实验，没碰过真设备", "score": 1},
+        {"text": "在真设备上做过基础配置(VLAN/接口)", "score": 2},
+        {"text": "能独立配置交换机+路由器+防火墙，搭建完整网络", "score": 3},
+        {"text": "能做复杂网络架构部署，处理过真实网络故障", "score": 4}
+      ]
+    },
+    {
+      "id": "N05",
+      "dimension": "tools",
+      "question": "关于网络工具使用，以下哪个最符合你？",
+      "options": [
+        {"text": "听过Wireshark但不怎么会用", "score": 1},
+        {"text": "会用Wireshark做基本抓包，会用eNSP/Packet Tracer", "score": 2},
+        {"text": "能用抓包工具分析网络问题，会用Xshell/SecureCRT远程管理", "score": 3},
+        {"text": "熟练使用网络分析/监控/自动化工具(Zabbix/Ansible等)", "score": 4}
+      ]
+    },
+    {
+      "id": "N06",
+      "dimension": "tools",
+      "question": "关于网络拓扑设计，以下哪个最符合你？",
+      "options": [
+        {"text": "不太会画网络拓扑图", "score": 1},
+        {"text": "能用Visio画简单的网络拓扑", "score": 2},
+        {"text": "能根据需求设计网络拓扑，标注IP和VLAN信息", "score": 3},
+        {"text": "能做完整的网络方案文档(拓扑+IP规划+设备选型+预算)", "score": 4}
+      ]
+    },
+    {
+      "id": "N07",
+      "dimension": "theory",
+      "question": "关于网络安全基础，以下哪个最符合你？",
+      "options": [
+        {"text": "知道防火墙和杀毒软件，其他安全知识很少", "score": 1},
+        {"text": "了解ACL、NAT的配置，知道常见攻击类型", "score": 2},
+        {"text": "能配置防火墙安全策略，了解IDS/IPS/WAF", "score": 3},
+        {"text": "有渗透测试或安全运营经验，能做安全评估", "score": 4}
+      ]
+    },
+    {
+      "id": "N08",
+      "dimension": "programming",
+      "question": "关于网络自动化编程，以下哪个最符合你？",
+      "options": [
+        {"text": "没想过用编程来管理网络设备", "score": 1},
+        {"text": "知道可以用Python管理网络设备，但没实践过", "score": 2},
+        {"text": "用过Netmiko/Paramiko连接设备做批量配置", "score": 3},
+        {"text": "能写完整的网络自动化脚本/用过Ansible管理网络", "score": 4}
+      ]
+    },
+    {
+      "id": "N09",
+      "dimension": "project",
+      "question": "你做过最复杂的网络项目是什么级别？",
+      "options": [
+        {"text": "只做过实验，没有完整项目", "score": 1},
+        {"text": "做过课程设计级别的小型网络搭建", "score": 2},
+        {"text": "做过完整的企业网/校园网规划设计项目(课设或实训)", "score": 3},
+        {"text": "参与过真实的网络工程项目/有相关实习经验", "score": 4}
+      ]
+    },
+    {
+      "id": "N10",
+      "dimension": "soft_skill",
+      "question": "如果让你给客户讲解一个网络方案，你觉得自己？",
+      "options": [
+        {"text": "完全不行，一紧张什么都说不出来", "score": 1},
+        {"text": "能说清楚技术要点，但不太会用通俗语言解释", "score": 2},
+        {"text": "能根据听众调整表达方式，让非技术人员也听懂", "score": 3},
+        {"text": "有过技术汇报/答辩/客户沟通经验，表达自信清晰", "score": 4}
+      ]
+    }
+  ],
+  "automation_questions": [
+    {
+      "id": "A01",
+      "dimension": "theory",
+      "question": "关于自动控制原理，以下哪个最符合你？",
+      "options": [
+        {"text": "学过但感觉很抽象，传递函数和波特图看不太懂", "score": 1},
+        {"text": "能分析简单系统的稳定性，画波特图和根轨迹", "score": 2},
+        {"text": "理解PID控制原理，能做控制器参数整定", "score": 3},
+        {"text": "能设计完整的控制系统，做仿真和实际调试", "score": 4}
+      ]
+    },
+    {
+      "id": "A02",
+      "dimension": "hardware",
+      "question": "关于PLC编程和调试，以下哪个最符合你？",
+      "options": [
+        {"text": "知道PLC是什么，但没编过程序", "score": 1},
+        {"text": "在课程中做过简单的梯形图编程(如红绿灯控制)", "score": 2},
+        {"text": "能独立写中等复杂度的PLC程序，会HMI画面配置", "score": 3},
+        {"text": "做过完整的PLC控制项目(含伺服/变频器)，能现场调试", "score": 4}
+      ]
+    },
+    {
+      "id": "A03",
+      "dimension": "hardware",
+      "question": "关于电气接线和调试，以下哪个最符合你？",
+      "options": [
+        {"text": "基本没接过线，不太敢碰电", "score": 1},
+        {"text": "在实验课上接过简单电路，按图纸能完成", "score": 2},
+        {"text": "能独立完成PLC控制柜的接线和调试", "score": 3},
+        {"text": "能看懂复杂电气图纸，独立完成电气柜设计与装配", "score": 4}
+      ]
+    },
+    {
+      "id": "A04",
+      "dimension": "tools",
+      "question": "关于自动化相关软件工具，以下哪个最符合你？",
+      "options": [
+        {"text": "只用过学校电脑上装的，自己电脑没装过", "score": 1},
+        {"text": "会用TIA Portal或GX Works做基本编程", "score": 2},
+        {"text": "熟练使用PLC编程软件+组态软件+CAD电气制图", "score": 3},
+        {"text": "能熟练使用全套工具链(PLC+HMI+SCADA+CAD)做完整项目", "score": 4}
+      ]
+    },
+    {
+      "id": "A05",
+      "dimension": "theory",
+      "question": "关于电机与拖动/电力电子，以下哪个最符合你？",
+      "options": [
+        {"text": "学过但记不太清，步进电机和伺服电机分不太清", "score": 1},
+        {"text": "了解各类电机的工作原理和应用场景", "score": 2},
+        {"text": "能计算电机选型参数，了解变频器控制原理", "score": 3},
+        {"text": "能完成电机驱动系统的选型、调试和优化", "score": 4}
+      ]
+    }
+  ],
+  "interest_questions": [
+    {
+      "id": "I01",
+      "question": "以下场景，你最感兴趣的是？（选2个最心动的）",
+      "type": "multi_select",
+      "max_select": 2,
+      "options": [
+        {"text": "在电脑前写代码，调试到程序跑通的那一刻最爽", "tags": ["programming", "software"]},
+        {"text": "拿着万用表和烙铁，把一个电路板调试成功", "tags": ["hardware", "electronics"]},
+        {"text": "站在机房里，看着一排排整齐的机柜和闪烁的灯", "tags": ["network", "datacenter"]},
+        {"text": "跟客户聊需求，然后设计出一套解决方案", "tags": ["management", "presales"]},
+        {"text": "在工厂里看自动化产线运转，分析怎么优化效率", "tags": ["automation", "manufacturing"]},
+        {"text": "研究安全漏洞，像解谜一样找到攻击路径", "tags": ["security", "hacking"]}
+      ]
+    },
+    {
+      "id": "I02",
+      "question": "你更喜欢哪种工作状态？",
+      "type": "single_select",
+      "options": [
+        {"text": "坐在办公室，安安静静写代码或做文档", "tags": ["office", "stable"]},
+        {"text": "在实验室/车间，跟设备和硬件打交道", "tags": ["hands_on", "hardware"]},
+        {"text": "到处跑项目现场，每个项目都不一样", "tags": ["field", "travel"]},
+        {"text": "跟人打交道多一些，做技术方案和客户沟通", "tags": ["communication", "presales"]}
+      ]
+    },
+    {
+      "id": "I03",
+      "question": "你对以下哪个最看重？",
+      "type": "single_select",
+      "options": [
+        {"text": "稳定性——工作不容易被淘汰，越老越值钱", "tags": ["stability"]},
+        {"text": "高薪——愿意吃苦，只要收入高", "tags": ["high_salary"]},
+        {"text": "成长性——能持续学到新东西，行业有前景", "tags": ["growth"]},
+        {"text": "自由度——不想被束缚，希望工作灵活", "tags": ["flexibility"]}
+      ]
+    }
+  ]
+}

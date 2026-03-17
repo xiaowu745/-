@@ -1,0 +1,68 @@
+{
+  "id": "iot",
+  "name": "物联网工程",
+  "category": "计算机/交叉学科",
+  "overview": "培养具备物联网系统感知、传输、处理和应用能力的复合型工程技术人才",
+  "core_courses": [
+    "计算机网络",
+    "物联网导论",
+    "传感器原理与应用",
+    "RFID原理与应用",
+    "嵌入式系统设计",
+    "无线传感网络",
+    "C语言/Python编程",
+    "单片机原理",
+    "数据库技术",
+    "物联网应用开发"
+  ],
+  "career_directions": [
+    {
+      "id": "embedded_iot",
+      "name": "嵌入式开发(IoT方向)",
+      "description": "物联网设备端固件开发",
+      "salary": {"entry": "7000-10000", "mid": "12000-20000", "senior": "20000-35000"},
+      "traits": ["技术核心", "需求大", "发展路线清晰"],
+      "required_skills": ["C/C++编程", "STM32/ESP32开发", "传感器驱动", "低功耗设计", "通信协议(MQTT/CoAP)"],
+      "recommended_certs": ["华为HCIA-IoT"]
+    },
+    {
+      "id": "iot_platform",
+      "name": "IoT平台开发",
+      "description": "物联网云平台开发与运维",
+      "salary": {"entry": "8000-12000", "mid": "15000-25000", "senior": "25000-40000"},
+      "traits": ["互联网属性", "薪资高", "偏软件"],
+      "required_skills": ["Java/Python/Go", "MQTT Broker", "时序数据库", "云平台(AWS IoT/阿里云IoT)"],
+      "recommended_certs": ["阿里云IoT认证", "AWS IoT认证"]
+    },
+    {
+      "id": "smart_hardware_test",
+      "name": "智能硬件测试",
+      "description": "物联网产品功能测试、可靠性测试",
+      "salary": {"entry": "5000-7000", "mid": "8000-12000", "senior": "12000-18000"},
+      "traits": ["门槛相对低", "需求大", "适合转行"],
+      "required_skills": ["测试方法论", "协议分析", "自动化测试脚本", "硬件基础"],
+      "recommended_certs": ["ISTQB(可选)"]
+    },
+    {
+      "id": "iot_integration",
+      "name": "物联网系统集成",
+      "description": "把设备、网络、平台串起来做方案和项目交付",
+      "salary": {"entry": "6000-8000", "mid": "10000-18000", "senior": "18000-30000"},
+      "traits": ["综合能力", "需出差", "3年经验起飞"],
+      "required_skills": ["网络组建", "设备选型", "方案设计", "项目管理"],
+      "recommended_certs": ["HCIP-IoT", "PMP(进阶)"]
+    }
+  ],
+  "skill_requirements": {
+    "theory": ["计算机网络", "传感器原理", "无线通信协议", "嵌入式系统原理", "数据库基础"],
+    "programming": ["C语言(嵌入式)", "Python(数据处理/平台)", "JavaScript(前端展示)", "SQL"],
+    "hardware": ["传感器接线与调试", "单片机烧录与调试", "PCB基础", "通信模块(WiFi/蓝牙/LoRa)使用"],
+    "tools": ["Keil/Arduino IDE/PlatformIO", "MQTT客户端工具", "串口调试工具", "云平台控制台", "Node-RED(可选)"],
+    "project": ["完整IoT项目(传感器→上云→可视化)", "智能家居/农业/环境监测demo", "嵌入式小系统开发"]
+  },
+  "cert_roadmap": [
+    {"stage": "大二", "certs": ["华为HCIA-IoT"], "cost": "500元左右", "priority": "推荐"},
+    {"stage": "大三", "certs": ["华为HCIP-IoT", "或阿里云IoT认证"], "cost": "1500元左右", "priority": "推荐"},
+    {"stage": "毕业后", "certs": ["嵌入式方向不需证书，平台方向考云认证"], "cost": "-", "priority": "做项目优先"}
+  ]
+}

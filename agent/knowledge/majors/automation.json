@@ -1,0 +1,77 @@
+{
+  "id": "automation",
+  "name": "自动化",
+  "category": "自动化/电气",
+  "overview": "培养具备自动控制系统分析、设计与开发能力的复合型工程技术人才",
+  "core_courses": [
+    "自动控制原理",
+    "电路原理",
+    "模拟/数字电子技术",
+    "电机与拖动",
+    "PLC原理与应用",
+    "单片机原理",
+    "电力电子技术",
+    "过程控制",
+    "C语言程序设计",
+    "传感器与检测技术"
+  ],
+  "career_directions": [
+    {
+      "id": "plc_engineer",
+      "name": "PLC工程师",
+      "description": "工业产线自动化控制编程、调试与维护",
+      "salary": {"entry": "6000-8000", "mid": "12000-18000", "senior": "18000-35000"},
+      "traits": ["越老越值钱", "需出差调试", "稳定性极高"],
+      "required_skills": ["西门子S7编程", "梯形图/功能块", "触摸屏HMI配置", "伺服/变频器调试"],
+      "recommended_certs": ["西门子官方认证", "低压电工证"]
+    },
+    {
+      "id": "electrical_engineer",
+      "name": "电气工程师",
+      "description": "电气图纸设计、电气柜装配、现场调试",
+      "salary": {"entry": "5000-7000", "mid": "8000-12000", "senior": "12000-20000"},
+      "traits": ["入行容易", "稳定", "可转管理"],
+      "required_skills": ["CAD电气制图", "电气柜设计", "电气安装调试"],
+      "recommended_certs": ["低压电工操作证", "注册电气工程师(长线)"]
+    },
+    {
+      "id": "automation_integrator",
+      "name": "自动化集成工程师",
+      "description": "将机器人、产线、传感器、软件系统集成到一起",
+      "salary": {"entry": "7000-9000", "mid": "12000-20000", "senior": "20000-35000"},
+      "traits": ["综合能力要求高", "出差频繁", "薪资天花板高"],
+      "required_skills": ["PLC编程", "工业机器人操作", "SCADA系统", "项目管理"],
+      "recommended_certs": ["西门子认证", "ABB机器人认证"]
+    },
+    {
+      "id": "embedded_from_auto",
+      "name": "嵌入式开发(偏自动化)",
+      "description": "单片机/嵌入式系统开发，做控制器产品",
+      "salary": {"entry": "8000-12000", "mid": "12000-20000", "senior": "20000-35000"},
+      "traits": ["偏软件", "薪资对标程序员", "不用出差"],
+      "required_skills": ["C/C++编程", "STM32开发", "RTOS", "硬件调试"],
+      "recommended_certs": ["无需考证，项目作品集更重要"]
+    },
+    {
+      "id": "robot_engineer",
+      "name": "工业机器人工程师",
+      "description": "机器人调试、编程、工作站设计",
+      "salary": {"entry": "8000-10000", "mid": "12000-20000", "senior": "18000-30000"},
+      "traits": ["最缺人方向", "需出差", "行业增长快"],
+      "required_skills": ["机器人操作编程(FANUC/ABB/KUKA)", "视觉系统", "工装夹具设计"],
+      "recommended_certs": ["ABB/FANUC官方培训认证"]
+    }
+  ],
+  "skill_requirements": {
+    "theory": ["自动控制原理", "电路分析", "模电数电", "电机原理", "传感器原理"],
+    "programming": ["C语言", "梯形图(PLC)", "结构化文本(ST)", "Python(数据处理)"],
+    "hardware": ["电气接线", "PLC接线调试", "伺服/变频器接线", "传感器安装校准", "电气柜装配"],
+    "tools": ["西门子TIA Portal", "三菱GX Works", "AutoCAD Electrical", "EPLAN", "组态软件(WinCC)"],
+    "project": ["自动化产线控制", "电气柜设计与装配", "机器人工作站集成", "过程控制系统"]
+  },
+  "cert_roadmap": [
+    {"stage": "大二", "certs": ["低压电工操作证"], "cost": "500-800元", "priority": "必考"},
+    {"stage": "大三", "certs": ["西门子PLC官方培训认证", "或三菱培训认证"], "cost": "2000-5000元", "priority": "强烈推荐"},
+    {"stage": "毕业后", "certs": ["注册电气工程师"], "cost": "考试费+备考", "priority": "长线目标(含金量顶级)"}
+  ]
+}

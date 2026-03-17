@@ -1,0 +1,68 @@
+{
+  "id": "network_engineering",
+  "name": "网络工程",
+  "category": "计算机",
+  "overview": "培养具备计算机网络系统的规划、设计、实施、运维和管理能力的工程技术人才",
+  "core_courses": [
+    "计算机网络原理",
+    "数据通信技术",
+    "路由与交换技术",
+    "网络安全技术",
+    "Linux操作系统",
+    "综合布线技术",
+    "数据库原理",
+    "C语言/Python编程",
+    "TCP/IP协议分析",
+    "无线网络技术"
+  ],
+  "career_directions": [
+    {
+      "id": "enterprise_network",
+      "name": "企业网运维",
+      "description": "管理公司内部网络设备和系统",
+      "salary": {"entry": "5000-7000", "mid": "8000-12000", "senior": "12000-18000"},
+      "traits": ["稳定", "加班少", "天花板中等"],
+      "required_skills": ["路由交换配置", "网络故障排查", "设备巡检维护"],
+      "recommended_certs": ["HCIA-Datacom", "HCIP-Datacom"]
+    },
+    {
+      "id": "data_center",
+      "name": "数据中心/系统集成",
+      "description": "机房建设、网络方案设计、项目交付",
+      "salary": {"entry": "6000-8000", "mid": "12000-18000", "senior": "20000-35000"},
+      "traits": ["成长快", "项目制", "需出差"],
+      "required_skills": ["网络方案设计", "综合布线", "项目管理", "机房建设"],
+      "recommended_certs": ["HCIP-Datacom", "软考-网络工程师", "PMP"]
+    },
+    {
+      "id": "network_security",
+      "name": "网络安全",
+      "description": "渗透测试、安全运营、安全架构设计",
+      "salary": {"entry": "8000-12000", "mid": "15000-25000", "senior": "25000-40000+"},
+      "traits": ["门槛高", "薪资高", "需求旺盛"],
+      "required_skills": ["安全攻防", "渗透测试", "安全审计", "应急响应"],
+      "recommended_certs": ["HCIP-Security", "CISP", "OSCP"]
+    },
+    {
+      "id": "cloud_network",
+      "name": "云计算/云网络",
+      "description": "云平台网络架构设计、SDN/SD-WAN",
+      "salary": {"entry": "8000-12000", "mid": "15000-25000", "senior": "25000-40000"},
+      "traits": ["技术前沿", "发展快", "互联网属性强"],
+      "required_skills": ["云平台操作", "虚拟化技术", "SDN", "容器网络"],
+      "recommended_certs": ["AWS/阿里云认证", "HCIE-Cloud"]
+    }
+  ],
+  "skill_requirements": {
+    "theory": ["TCP/IP协议族", "OSI七层模型", "路由协议(OSPF/BGP)", "VLAN/STP/链路聚合", "子网划分与IP规划", "NAT/ACL", "DNS/DHCP/HTTP"],
+    "programming": ["Python网络自动化", "Shell脚本", "正则表达式", "API调用"],
+    "hardware": ["综合布线(水晶头/配线架/光纤熔接)", "设备上架/理线", "机房巡检", "设备初始化调试"],
+    "tools": ["华为eNSP/Cisco Packet Tracer", "Wireshark", "SecureCRT/Xshell", "Visio/亿图", "Zabbix/Prometheus(监控)"],
+    "project": ["企业网络方案设计", "综合布线工程", "机房建设项目", "网络安全评估"]
+  },
+  "cert_roadmap": [
+    {"stage": "大二", "certs": ["华为HCIA-Datacom"], "cost": "500元左右", "priority": "必考"},
+    {"stage": "大三", "certs": ["华为HCIP-Datacom", "软考-网络工程师"], "cost": "1500元/70元", "priority": "强烈推荐"},
+    {"stage": "毕业后", "certs": ["HCIE-Datacom", "CCIE"], "cost": "8000+元", "priority": "高级目标"}
+  ]
+}
