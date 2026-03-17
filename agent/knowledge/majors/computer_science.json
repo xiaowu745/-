@@ -1,0 +1,77 @@
+{
+  "id": "computer_science",
+  "name": "计算机科学与技术",
+  "category": "计算机",
+  "overview": "培养具备计算机系统分析、设计、开发与应用能力的高级工程技术人才",
+  "core_courses": [
+    "数据结构与算法",
+    "操作系统",
+    "计算机组成原理",
+    "计算机网络",
+    "数据库原理",
+    "编译原理",
+    "软件工程",
+    "C/C++程序设计",
+    "Java程序设计",
+    "离散数学"
+  ],
+  "career_directions": [
+    {
+      "id": "backend_developer",
+      "name": "后端开发工程师",
+      "description": "服务端程序开发、数据库设计、系统架构",
+      "salary": {"entry": "8000-12000", "mid": "15000-25000", "senior": "25000-50000+"},
+      "traits": ["需求量最大", "技术迭代快", "薪资天花板高"],
+      "required_skills": ["Java/Go/Python", "Spring/Django等框架", "MySQL/Redis", "Linux", "分布式系统"],
+      "recommended_certs": ["无硬性要求，LeetCode刷题+项目为主"]
+    },
+    {
+      "id": "frontend_developer",
+      "name": "前端开发工程师",
+      "description": "网页/小程序/App界面开发",
+      "salary": {"entry": "7000-10000", "mid": "12000-22000", "senior": "22000-40000"},
+      "traits": ["上手快", "技术栈变化快", "需审美能力"],
+      "required_skills": ["HTML/CSS/JavaScript", "React/Vue框架", "小程序开发", "TypeScript"],
+      "recommended_certs": ["无需考证，GitHub作品集为主"]
+    },
+    {
+      "id": "devops_engineer",
+      "name": "运维/DevOps工程师",
+      "description": "系统运维、CI/CD、云平台管理",
+      "salary": {"entry": "7000-10000", "mid": "12000-20000", "senior": "20000-35000"},
+      "traits": ["稳定", "越老越值钱", "需值班"],
+      "required_skills": ["Linux系统管理", "Shell/Python脚本", "Docker/K8s", "CI/CD工具", "监控系统"],
+      "recommended_certs": ["红帽RHCE", "AWS/阿里云认证", "软考-网络工程师"]
+    },
+    {
+      "id": "test_engineer",
+      "name": "测试工程师",
+      "description": "软件测试、自动化测试、质量保障",
+      "salary": {"entry": "6000-9000", "mid": "10000-18000", "senior": "18000-30000"},
+      "traits": ["入行门槛相对低", "转行友好", "自动化方向薪资高"],
+      "required_skills": ["测试方法论", "自动化测试(Selenium/Appium)", "性能测试", "SQL", "Python"],
+      "recommended_certs": ["ISTQB(可选)"]
+    },
+    {
+      "id": "ai_engineer",
+      "name": "AI/算法工程师",
+      "description": "机器学习、深度学习、大模型应用开发",
+      "salary": {"entry": "12000-20000", "mid": "20000-40000", "senior": "40000-80000+"},
+      "traits": ["门槛最高", "需研究生学历", "薪资最高"],
+      "required_skills": ["Python", "PyTorch/TensorFlow", "数学基础(线代/概率/优化)", "论文阅读能力"],
+      "recommended_certs": ["无需考证，论文+竞赛+项目为主"]
+    }
+  ],
+  "skill_requirements": {
+    "theory": ["数据结构与算法", "操作系统原理", "计算机网络", "数据库原理", "设计模式"],
+    "programming": ["至少精通一门语言(Java/Python/Go/C++)", "算法与数据结构实现", "框架使用", "代码规范"],
+    "hardware": ["计算机组成原理理解", "Linux命令行操作", "服务器基础操作(对运维方向)"],
+    "tools": ["Git版本控制", "IDE(VS Code/IntelliJ)", "Docker", "数据库客户端", "Postman/curl"],
+    "project": ["Web应用开发", "课程设计", "开源项目贡献", "竞赛/hackathon"]
+  },
+  "cert_roadmap": [
+    {"stage": "大二", "certs": ["软考-程序员(初级)"], "cost": "70元", "priority": "可选"},
+    {"stage": "大三", "certs": ["软考-软件设计师(中级)", "红帽RHCE(运维方向)"], "cost": "70元/2000-4000元", "priority": "推荐"},
+    {"stage": "毕业后", "certs": ["AWS认证/阿里云认证(云方向)", "PMP(管理方向)"], "cost": "不等", "priority": "按方向选择"}
+  ]
+}

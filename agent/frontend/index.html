@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>工科导航 - 技能测评</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 首页 -->
+    <section id="page-home" class="page active">
+      <div class="hero">
+        <div class="logo">🧭</div>
+        <h1>工科导航</h1>
+        <p class="subtitle">AI 技能测评与职业规划</p>
+        <p class="desc">3分钟测评 → 发现你的方向 → 获取专属学习路径</p>
+      </div>
+      <div class="card-group">
+        <div class="action-card" onclick="startAssessment()">
+          <div class="card-icon">📝</div>
+          <h3>开始测评</h3>
+          <p>6维度技能评估，找到你的优势和短板</p>
+        </div>
+        <div class="action-card" onclick="showPage('page-chat')">
+          <div class="card-icon">💬</div>
+          <h3>自由问答</h3>
+          <p>职业规划、考证、实习——什么都能问</p>
+        </div>
+        <div class="action-card" onclick="showPage('page-interview-setup')">
+          <div class="card-icon">🎤</div>
+          <h3>面试模拟</h3>
+          <p>AI面试官帮你练习技术面和HR面</p>
+        </div>
+      </div>
+      <div class="footer-info">
+        <p>15年工程师 + 10年高校实训经验</p>
+      </div>
+    </section>
+
+    <!-- 学生信息填写 -->
+    <section id="page-profile" class="page">
+      <div class="page-header">
+        <button class="btn-back" onclick="showPage('page-home')">←</button>
+        <h2>基本信息</h2>
+      </div>
+      <div class="form-container">
+        <div class="form-group">
+          <label>你的昵称</label>
+          <input type="text" id="input-nickname" placeholder="怎么称呼你？" maxlength="20">
+        </div>
+        <div class="form-group">
+          <label>你的专业</label>
+          <div class="select-grid" id="major-select">
+            <div class="select-item" data-value="computer_science">计算机科学</div>
+            <div class="select-item" data-value="software_engineering">软件工程</div>
+            <div class="select-item" data-value="network_engineering">网络工程</div>
+            <div class="select-item" data-value="electronic_info">电子信息</div>
+            <div class="select-item" data-value="communication">通信工程</div>
+            <div class="select-item" data-value="automation">自动化</div>
+            <div class="select-item" data-value="electrical">电气工程</div>
+            <div class="select-item" data-value="iot">物联网工程</div>
+            <div class="select-item" data-value="mechanical">机械/机电</div>
+            <div class="select-item" data-value="ai">人工智能</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>你的年级</label>
+          <div class="select-grid cols-4" id="grade-select">
+            <div class="select-item" data-value="freshman">大一</div>
+            <div class="select-item" data-value="sophomore">大二</div>
+            <div class="select-item" data-value="junior">大三</div>
+            <div class="select-item" data-value="senior">大四</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>学校层次</label>
+          <div class="select-grid cols-4" id="school-select">
+            <div class="select-item" data-value="985">985</div>
+            <div class="select-item" data-value="211">211</div>
+            <div class="select-item" data-value="普通本科">普通本科</div>
+            <div class="select-item" data-value="专科">专科</div>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="submitProfile()">下一步 →</button>
+      </div>
+    </section>
+
+    <!-- 快速测评 -->
+    <section id="page-quiz" class="page">
+      <div class="page-header">
+        <button class="btn-back" onclick="showPage('page-profile')">←</button>
+        <h2>技能自评</h2>
+        <span class="progress-text" id="quiz-progress">1/20</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="quiz-progress-bar"></div>
+      </div>
+      <div id="quiz-container">
+        <div class="question-card" id="question-card">
+          <div class="question-dim" id="question-dim">理论基础</div>
+          <p class="question-text" id="question-text">加载中...</p>
+          <div class="options" id="options-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 快速测评结果 -->
+    <section id="page-quick-result" class="page">
+      <div class="page-header">
+        <h2>测评初步结果</h2>
+      </div>
+      <div class="result-container">
+        <div class="score-circle" id="overall-score">
+          <span class="score-number">--</span>
+          <span class="score-label">综合得分</span>
+        </div>
+        <canvas id="radar-chart" width="300" height="300"></canvas>
+        <div id="score-bars"></div>
+        <div class="weak-hint" id="weak-hint"></div>
+        <button class="btn-primary" onclick="startDeepChat()">进入 AI 深度评估 →</button>
+        <button class="btn-secondary" onclick="skipToReport()">跳过，直接看报告</button>
+      </div>
+    </section>
+
+    <!-- AI 深度对话 -->
+    <section id="page-deep-chat" class="page">
+      <div class="page-header">
+        <h2>AI 深度评估</h2>
+        <span class="chat-hint">AI正在深入了解你的技能水平</span>
+      </div>
+      <div class="chat-container" id="deep-chat-messages"></div>
+      <div class="chat-input-area">
+        <textarea id="deep-chat-input" placeholder="输入你的回答..." rows="2"></textarea>
+        <button class="btn-send" id="btn-deep-send" onclick="sendDeepChat()">发送</button>
+      </div>
+    </section>
+
+    <!-- 测评报告 -->
+    <section id="page-report" class="page">
+      <div class="page-header">
+        <button class="btn-back" onclick="showPage('page-home')">←</button>
+        <h2>测评报告</h2>
+      </div>
+      <div class="report-container" id="report-content">
+        <div class="loading-spinner">报告生成中...</div>
+      </div>
+      <div class="report-actions">
+        <button class="btn-primary" onclick="showPage('page-interview-setup')">试试面试模拟</button>
+        <button class="btn-secondary" onclick="showPage('page-home')">返回首页</button>
+      </div>
+    </section>
+
+    <!-- 自由问答 -->
+    <section id="page-chat" class="page">
+      <div class="page-header">
+        <button class="btn-back" onclick="showPage('page-home')">←</button>
+        <h2>AI 职业顾问</h2>
+      </div>
+      <div class="chat-container" id="free-chat-messages">
+        <div class="message bot">
+          <div class="message-content">
+            你好！我是工科导航AI助手 🧭<br><br>
+            你可以问我任何关于工科就业的问题，比如：<br>
+            • 我学XX专业能做什么工作？<br>
+            • XX岗位薪资多少？<br>
+            • 大学应该考什么证？<br>
+            • 考研还是就业？<br><br>
+            有什么想了解的，尽管问！
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <textarea id="free-chat-input" placeholder="输入你的问题..." rows="2"></textarea>
+        <button class="btn-send" id="btn-free-send" onclick="sendFreeChat()">发送</button>
+      </div>
+    </section>
+
+    <!-- 面试模拟设置 -->
+    <section id="page-interview-setup" class="page">
+      <div class="page-header">
+        <button class="btn-back" onclick="showPage('page-home')">←</button>
+        <h2>面试模拟</h2>
+      </div>
+      <div class="form-container">
+        <div class="form-group">
+          <label>选择目标岗位</label>
+          <div class="select-grid cols-2" id="position-select">
+            <div class="select-item" data-value="网络工程师">网络工程师</div>
+            <div class="select-item" data-value="嵌入式工程师">嵌入式工程师</div>
+            <div class="select-item" data-value="PLC工程师">PLC工程师</div>
+            <div class="select-item" data-value="系统集成工程师">系统集成工程师</div>
+            <div class="select-item" data-value="后端开发工程师">后端开发工程师</div>
+            <div class="select-item" data-value="前端开发工程师">前端开发工程师</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>面试类型</label>
+          <div class="select-grid cols-3" id="interview-type-select">
+            <div class="select-item selected" data-value="technical">技术面</div>
+            <div class="select-item" data-value="hr">HR面</div>
+            <div class="select-item" data-value="project">项目答辩</div>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="startInterview()">开始面试 →</button>
+      </div>
+    </section>
+
+    <!-- 面试对话 -->
+    <section id="page-interview" class="page">
+      <div class="page-header">
+        <h2 id="interview-title">技术面试</h2>
+        <button class="btn-end" onclick="endInterview()">结束面试</button>
+      </div>
+      <div class="chat-container" id="interview-messages"></div>
+      <div class="chat-input-area">
+        <textarea id="interview-input" placeholder="输入你的回答..." rows="2"></textarea>
+        <button class="btn-send" id="btn-interview-send" onclick="sendInterviewChat()">发送</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

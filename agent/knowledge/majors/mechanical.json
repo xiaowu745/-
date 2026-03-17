@@ -1,0 +1,77 @@
+{
+  "id": "mechanical",
+  "name": "机械设计制造及其自动化",
+  "category": "机械",
+  "overview": "培养具备机械设计、制造、自动化控制等综合能力的工程技术人才",
+  "core_courses": [
+    "工程力学",
+    "机械设计基础",
+    "机械制造工艺",
+    "材料力学",
+    "互换性与测量技术",
+    "液压与气压传动",
+    "数控技术",
+    "CAD/CAM技术",
+    "机电一体化",
+    "C语言程序设计"
+  ],
+  "career_directions": [
+    {
+      "id": "cnc_programmer",
+      "name": "CNC编程/操机工程师",
+      "description": "数控机床编程、操作、工艺优化",
+      "salary": {"entry": "5000-7000", "mid": "8000-15000", "senior": "15000-25000"},
+      "traits": ["入行门槛低", "经验值钱", "制造业刚需"],
+      "required_skills": ["G代码/M代码编程", "UG/Mastercam编程", "加工工艺", "刀具选型", "机床操作"],
+      "recommended_certs": ["数控车/铣中级工证", "UG/Mastercam培训证书"]
+    },
+    {
+      "id": "mechanical_designer",
+      "name": "机械设计工程师",
+      "description": "产品结构设计、非标设备设计",
+      "salary": {"entry": "6000-8000", "mid": "10000-18000", "senior": "18000-30000"},
+      "traits": ["技术路线清晰", "经验积累型", "需要耐心"],
+      "required_skills": ["SolidWorks/CATIA/UG建模", "工程制图", "力学分析", "材料选型", "GD&T"],
+      "recommended_certs": ["SolidWorks认证(CSWA/CSWP)", "注册机械工程师(长线)"]
+    },
+    {
+      "id": "quality_engineer",
+      "name": "质量工程师",
+      "description": "产品质量管控、体系管理、供应商审核",
+      "salary": {"entry": "5000-7000", "mid": "8000-15000", "senior": "15000-25000"},
+      "traits": ["稳定", "可转管理", "需要细心"],
+      "required_skills": ["质量管理体系(ISO9001)", "SPC/FMEA/MSA", "检测工具使用", "8D报告"],
+      "recommended_certs": ["质量工程师(CQE)", "六西格玛绿带/黑带"]
+    },
+    {
+      "id": "mfg_process_engineer",
+      "name": "工艺工程师",
+      "description": "生产工艺设计、产线优化、新品导入",
+      "salary": {"entry": "5000-8000", "mid": "8000-15000", "senior": "15000-25000"},
+      "traits": ["制造业核心岗位", "需要现场经验", "稳定"],
+      "required_skills": ["工艺流程设计", "夹具/治具设计", "精益生产", "AutoCAD/SolidWorks"],
+      "recommended_certs": ["无硬性要求"]
+    },
+    {
+      "id": "robotics_from_mech",
+      "name": "工业机器人工程师(机械方向)",
+      "description": "机器人工作站设计、集成、调试",
+      "salary": {"entry": "7000-10000", "mid": "12000-20000", "senior": "20000-35000"},
+      "traits": ["最缺人", "需出差", "行业增长快"],
+      "required_skills": ["机器人操作编程", "工装夹具设计", "机器视觉基础", "PLC基础"],
+      "recommended_certs": ["ABB/FANUC官方培训认证"]
+    }
+  ],
+  "skill_requirements": {
+    "theory": ["工程力学", "材料力学", "机械原理", "机械设计", "公差与配合"],
+    "programming": ["G代码/M代码", "UG/Mastercam CAM编程", "Python(数据分析/自动化辅助)", "PLC梯形图(机电方向)"],
+    "hardware": ["机床操作", "量具使用(卡尺/千分尺/三坐标)", "装配与调试", "钳工基础", "焊接基础"],
+    "tools": ["SolidWorks/UG/CATIA", "AutoCAD", "Mastercam/PowerMill", "ANSYS(有限元分析)", "3D打印机"],
+    "project": ["机械结构设计", "CNC加工项目", "非标设备设计", "机电一体化综合项目"]
+  },
+  "cert_roadmap": [
+    {"stage": "大二", "certs": ["SolidWorks CSWA(助理工程师)"], "cost": "200-500元", "priority": "推荐"},
+    {"stage": "大三", "certs": ["SolidWorks CSWP(专业工程师)", "数控中级工证"], "cost": "500-1000元/考试费", "priority": "推荐"},
+    {"stage": "毕业后", "certs": ["注册机械工程师", "六西格玛绿带"], "cost": "不等", "priority": "长线目标"}
+  ]
+}

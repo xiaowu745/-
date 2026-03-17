@@ -24,6 +24,7 @@ from models.schemas import (
     StudentProfile, QuickAnswer, DimensionScore,
     AssessmentReport, DirectionMatch, InterviewFeedback,
 )
+from models.database import save_assessment
 
 KNOWLEDGE_DIR = Path(__file__).parent.parent / "knowledge"
 
@@ -101,6 +102,20 @@ class SkillAssessmentAgent:
             "weak_dimensions": weak_dims,
             "directions": [d.model_dump() for d in directions],
         })
+
+        # 持久化到数据库
+        try:
+            save_assessment(session_id, {
+                "student": student.model_dump(),
+                "quick_answers": [a.model_dump() for a in answers],
+                "dimension_scores": [ds.model_dump() for ds in dimension_scores],
+                "overall_score": overall_score,
+                "weak_dimensions": weak_dims,
+                "recommended_directions": [d.model_dump() for d in directions],
+                "status": "quick_done",
+            })
+        except Exception:
+            pass  # MVP阶段数据库异常不阻塞主流程
 
         return {
             "session_id": session_id,
