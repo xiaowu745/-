@@ -25,7 +25,10 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 生产环境改为具体域名
+    allow_origins=["*"] if settings.debug else [
+        f"https://{settings.allowed_domain}",
+        "https://servicewechat.com",  # 微信小程序
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

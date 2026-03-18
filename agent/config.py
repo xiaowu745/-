@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     secret_key: str = "change-me-in-production"
     access_token_expire_minutes: int = 60 * 24 * 7  # 7天
 
+    # 域名（生产环境 CORS 用）
+    allowed_domain: str = "localhost"
+
     # 测评配置
     quick_assessment_questions: int = 20
     deep_assessment_max_turns: int = 15
