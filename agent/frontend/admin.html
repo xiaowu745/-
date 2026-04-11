@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工科导航 · 线索管理后台</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f1f5f9;
+      color: #1e293b;
+      font-size: 14px;
+    }
+    .container { max-width: 1280px; margin: 0 auto; padding: 24px 16px; }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .header h1 { font-size: 20px; color: #1e40af; }
+    .header .meta { color: #64748b; font-size: 13px; }
+
+    /* 登录遮罩 */
+    .login-mask {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .login-box {
+      background: #fff;
+      padding: 32px 28px;
+      border-radius: 12px;
+      width: 320px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    .login-box h2 { margin-bottom: 16px; font-size: 18px; }
+    .login-box input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    .login-box .error {
+      color: #dc2626;
+      font-size: 13px;
+      margin-bottom: 8px;
+      min-height: 18px;
+    }
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      background: #2563eb;
+      color: white;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #1d4ed8; }
+    .btn-ghost { background: #fff; color: #334155; border: 1px solid #cbd5e1; }
+    .btn-ghost:hover { background: #f8fafc; }
+    .btn-sm { padding: 4px 10px; font-size: 12px; }
+    .btn-block { width: 100%; padding: 10px; }
+
+    /* 筛选条 */
+    .filters {
+      background: #fff;
+      padding: 16px;
+      border-radius: 8px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .filters input, .filters select {
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13px;
+      background: #fff;
+    }
+
+    /* 统计 */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .stat-card {
+      background: #fff;
+      padding: 16px;
+      border-radius: 8px;
+      border-left: 4px solid #2563eb;
+    }
+    .stat-card .num { font-size: 24px; font-weight: 700; color: #1e40af; }
+    .stat-card .label { font-size: 12px; color: #64748b; margin-top: 4px; }
+
+    /* 表格 */
+    .table-wrap {
+      background: #fff;
+      border-radius: 8px;
+      overflow: auto;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 1100px; }
+    thead { background: #f8fafc; }
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 13px;
+    }
+    th { font-weight: 600; color: #475569; white-space: nowrap; }
+    tbody tr:hover { background: #f8fafc; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-new { background: #dbeafe; color: #1e40af; }
+    .badge-contacted { background: #fef3c7; color: #92400e; }
+    .badge-converted { background: #d1fae5; color: #065f46; }
+    .badge-invalid { background: #fee2e2; color: #991b1b; }
+
+    .phone { font-family: monospace; font-weight: 600; color: #1e40af; }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px;
+      background: #fff;
+      border-top: 1px solid #e2e8f0;
+    }
+    .pagination span { color: #64748b; font-size: 13px; }
+
+    .empty {
+      padding: 60px 20px;
+      text-align: center;
+      color: #94a3b8;
+    }
+
+    /* 编辑弹窗 */
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+    .modal-mask.show { display: flex; }
+    .modal-box {
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      width: 380px;
+    }
+    .modal-box h3 { margin-bottom: 16px; }
+    .modal-box label { display: block; font-size: 13px; color: #475569; margin-bottom: 4px; margin-top: 12px; }
+    .modal-box select, .modal-box textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+    }
+    .modal-box textarea { min-height: 80px; resize: vertical; }
+    .modal-box .actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 12px 8px; }
+      .header h1 { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 登录遮罩 -->
+  <div class="login-mask" id="login-mask">
+    <div class="login-box">
+      <h2>🧭 线索管理后台</h2>
+      <div class="error" id="login-error"></div>
+      <input type="password" id="login-password" placeholder="请输入管理员密码" autofocus>
+      <button class="btn btn-block" onclick="doLogin()">登 录</button>
+    </div>
+  </div>
+
+  <div class="container" id="main" style="display:none">
+    <div class="header">
+      <h1>🧭 工科导航 · 线索管理后台</h1>
+      <div class="meta">
+        <span id="last-update"></span>
+        <button class="btn btn-sm btn-ghost" onclick="logout()">退出</button>
+      </div>
+    </div>
+
+    <!-- 统计 -->
+    <div class="stats" id="stats"></div>
+
+    <!-- 筛选 -->
+    <div class="filters">
+      <input type="text" id="filter-keyword" placeholder="搜索手机号/昵称" onkeyup="if(event.key==='Enter')reload()">
+      <select id="filter-major">
+        <option value="">全部专业</option>
+        <option value="computer_science">计算机科学</option>
+        <option value="software_engineering">软件工程</option>
+        <option value="network_engineering">网络工程</option>
+        <option value="electronic_info">电子信息</option>
+        <option value="communication">通信工程</option>
+        <option value="automation">自动化</option>
+        <option value="electrical">电气工程</option>
+        <option value="iot">物联网工程</option>
+        <option value="mechanical">机械/机电</option>
+        <option value="ai">人工智能</option>
+      </select>
+      <select id="filter-grade">
+        <option value="">全部年级</option>
+        <option value="freshman">大一</option>
+        <option value="sophomore">大二</option>
+        <option value="junior">大三</option>
+        <option value="senior">大四</option>
+      </select>
+      <select id="filter-status">
+        <option value="">全部状态</option>
+        <option value="new">未联系</option>
+        <option value="contacted">已联系</option>
+        <option value="converted">已转化</option>
+        <option value="invalid">无效</option>
+      </select>
+      <button class="btn" onclick="reload()">筛选</button>
+      <button class="btn btn-ghost" onclick="resetFilter()">重置</button>
+      <button class="btn" style="background:#059669" onclick="exportCsv()">导出 CSV</button>
+    </div>
+
+    <!-- 表格 -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>手机号</th>
+            <th>昵称</th>
+            <th>专业</th>
+            <th>年级</th>
+            <th>学校</th>
+            <th>综合分</th>
+            <th>薄弱项</th>
+            <th>来源</th>
+            <th>状态</th>
+            <th>时间</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="pagination">
+        <button class="btn btn-sm btn-ghost" onclick="prevPage()" id="btn-prev">← 上一页</button>
+        <span id="page-info">-</span>
+        <button class="btn btn-sm btn-ghost" onclick="nextPage()" id="btn-next">下一页 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 编辑弹窗 -->
+  <div class="modal-mask" id="edit-modal">
+    <div class="modal-box">
+      <h3>更新线索</h3>
+      <div style="font-size:13px; color:#64748b; margin-bottom:8px">
+        手机号：<span id="edit-phone"></span>
+      </div>
+      <label>跟进状态</label>
+      <select id="edit-status">
+        <option value="new">未联系</option>
+        <option value="contacted">已联系</option>
+        <option value="converted">已转化</option>
+        <option value="invalid">无效</option>
+      </select>
+      <label>备注</label>
+      <textarea id="edit-notes" placeholder="销售跟进记录..."></textarea>
+      <div class="actions">
+        <button class="btn btn-ghost" onclick="closeEdit()">取消</button>
+        <button class="btn" onclick="saveEdit()">保存</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+const API = "/api/leads";
+const TOKEN_KEY = "gongke_admin_token";
+
+const state = {
+  page: 0,
+  pageSize: 30,
+  total: 0,
+  items: [],
+  editingId: null,
+};
+
+const majorNames = {
+  computer_science: "计算机", software_engineering: "软工",
+  network_engineering: "网工", electronic_info: "电信",
+  communication: "通信", automation: "自动化",
+  electrical: "电气", iot: "物联网",
+  mechanical: "机电", ai: "人工智能",
+};
+const gradeNames = {
+  freshman: "大一", sophomore: "大二", junior: "大三", senior: "大四",
+};
+const statusMap = {
+  new: { label: "未联系", cls: "badge-new" },
+  contacted: { label: "已联系", cls: "badge-contacted" },
+  converted: { label: "已转化", cls: "badge-converted" },
+  invalid: { label: "无效", cls: "badge-invalid" },
+};
+
+function getToken() { return localStorage.getItem(TOKEN_KEY) || ""; }
+function setToken(t) { localStorage.setItem(TOKEN_KEY, t); }
+function clearToken() { localStorage.removeItem(TOKEN_KEY); }
+
+function showLogin() {
+  document.getElementById("login-mask").style.display = "flex";
+  document.getElementById("main").style.display = "none";
+}
+
+function showMain() {
+  document.getElementById("login-mask").style.display = "none";
+  document.getElementById("main").style.display = "block";
+  reload();
+}
+
+async function doLogin() {
+  const pwd = document.getElementById("login-password").value;
+  const errorEl = document.getElementById("login-error");
+  errorEl.textContent = "";
+  if (!pwd) { errorEl.textContent = "请输入密码"; return; }
+  try {
+    const res = await fetch(`${API}/admin/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: pwd }),
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      errorEl.textContent = err.detail || "登录失败";
+      return;
+    }
+    const data = await res.json();
+    setToken(data.token);
+    showMain();
+  } catch (e) {
+    errorEl.textContent = "网络错误";
+  }
+}
+
+function logout() {
+  clearToken();
+  showLogin();
+}
+
+async function apiGet(path, params = {}) {
+  const qs = new URLSearchParams(params).toString();
+  const url = `${API}${path}${qs ? "?" + qs : ""}`;
+  const res = await fetch(url, {
+    headers: { "Authorization": "Bearer " + getToken() },
+  });
+  if (res.status === 401) {
+    clearToken();
+    showLogin();
+    throw new Error("unauthorized");
+  }
+  return res.json();
+}
+
+async function reload() {
+  const params = {
+    limit: state.pageSize,
+    offset: state.page * state.pageSize,
+  };
+  const kw = document.getElementById("filter-keyword").value.trim();
+  const major = document.getElementById("filter-major").value;
+  const grade = document.getElementById("filter-grade").value;
+  const status = document.getElementById("filter-status").value;
+  if (kw) params.keyword = kw;
+  if (major) params.major = major;
+  if (grade) params.grade = grade;
+  if (status) params.status = status;
+
+  try {
+    const data = await apiGet("/admin/list", params);
+    state.total = data.total;
+    state.items = data.items;
+    renderTable();
+    renderStats();
+    document.getElementById("last-update").textContent =
+      "更新于 " + new Date().toLocaleTimeString("zh-CN");
+  } catch (e) {
+    if (e.message !== "unauthorized") alert("加载失败: " + e.message);
+  }
+}
+
+function resetFilter() {
+  document.getElementById("filter-keyword").value = "";
+  document.getElementById("filter-major").value = "";
+  document.getElementById("filter-grade").value = "";
+  document.getElementById("filter-status").value = "";
+  state.page = 0;
+  reload();
+}
+
+function renderStats() {
+  const counts = { new: 0, contacted: 0, converted: 0, invalid: 0 };
+  state.items.forEach(it => { counts[it.status] = (counts[it.status] || 0) + 1; });
+  document.getElementById("stats").innerHTML = `
+    <div class="stat-card"><div class="num">${state.total}</div><div class="label">线索总数（匹配当前筛选）</div></div>
+    <div class="stat-card" style="border-color:#3b82f6"><div class="num">${counts.new}</div><div class="label">本页未联系</div></div>
+    <div class="stat-card" style="border-color:#f59e0b"><div class="num">${counts.contacted}</div><div class="label">本页已联系</div></div>
+    <div class="stat-card" style="border-color:#10b981"><div class="num">${counts.converted}</div><div class="label">本页已转化</div></div>
+  `;
+}
+
+function renderTable() {
+  const tbody = document.getElementById("tbody");
+  if (state.items.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="12"><div class="empty">暂无线索数据</div></td></tr>`;
+  } else {
+    tbody.innerHTML = state.items.map(it => {
+      const st = statusMap[it.status] || { label: it.status, cls: "badge-new" };
+      const weak = Array.isArray(it.weak_dimensions) ? it.weak_dimensions.join("、") : (it.weak_dimensions || "-");
+      return `
+        <tr>
+          <td>${it.id}</td>
+          <td class="phone">${it.phone}</td>
+          <td>${it.nickname || "-"}</td>
+          <td>${majorNames[it.major] || it.major || "-"}</td>
+          <td>${gradeNames[it.grade] || it.grade || "-"}</td>
+          <td>${it.school_tier || "-"}</td>
+          <td>${it.overall_score ?? "-"}</td>
+          <td>${weak}</td>
+          <td>${it.source || "-"}</td>
+          <td><span class="badge ${st.cls}">${st.label}</span></td>
+          <td style="white-space:nowrap;color:#64748b">${it.created_at}</td>
+          <td>
+            <button class="btn btn-sm" onclick="openEdit(${it.id})">编辑</button>
+          </td>
+        </tr>
+      `;
+    }).join("");
+  }
+
+  // 分页信息
+  const totalPages = Math.max(1, Math.ceil(state.total / state.pageSize));
+  document.getElementById("page-info").textContent =
+    `第 ${state.page + 1} / ${totalPages} 页 · 共 ${state.total} 条`;
+  document.getElementById("btn-prev").disabled = state.page === 0;
+  document.getElementById("btn-next").disabled = state.page >= totalPages - 1;
+}
+
+function prevPage() { if (state.page > 0) { state.page--; reload(); } }
+function nextPage() {
+  const totalPages = Math.ceil(state.total / state.pageSize);
+  if (state.page < totalPages - 1) { state.page++; reload(); }
+}
+
+function openEdit(id) {
+  const lead = state.items.find(x => x.id === id);
+  if (!lead) return;
+  state.editingId = id;
+  document.getElementById("edit-phone").textContent = lead.phone;
+  document.getElementById("edit-status").value = lead.status || "new";
+  document.getElementById("edit-notes").value = lead.notes || "";
+  document.getElementById("edit-modal").classList.add("show");
+}
+
+function closeEdit() {
+  document.getElementById("edit-modal").classList.remove("show");
+  state.editingId = null;
+}
+
+async function saveEdit() {
+  if (!state.editingId) return;
+  const status = document.getElementById("edit-status").value;
+  const notes = document.getElementById("edit-notes").value;
+  try {
+    const res = await fetch(`${API}/admin/${state.editingId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + getToken(),
+      },
+      body: JSON.stringify({ status, notes }),
+    });
+    if (!res.ok) throw new Error("保存失败");
+    closeEdit();
+    reload();
+  } catch (e) {
+    alert(e.message);
+  }
+}
+
+async function exportCsv() {
+  // 用 fetch 带 token，再用 blob 触发下载
+  try {
+    const res = await fetch(`${API}/admin/export.csv`, {
+      headers: { "Authorization": "Bearer " + getToken() },
+    });
+    if (!res.ok) throw new Error("导出失败");
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `leads-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch (e) {
+    alert(e.message);
+  }
+}
+
+// 回车登录
+document.getElementById("login-password").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") doLogin();
+});
+
+// 启动：有 token 就直接进后台
+if (getToken()) {
+  showMain();
+} else {
+  showLogin();
+}
+</script>
+</body>
+</html>

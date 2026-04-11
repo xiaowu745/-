@@ -501,3 +501,134 @@ body {
 @media (min-width: 480px) {
   body { border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
 }
+
+/* ============ 留资弹窗 ============ */
+
+.lead-modal-mask {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 0.25s ease;
+}
+
+.lead-modal-mask.show { display: flex; }
+
+.lead-modal-box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px 20px 18px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: leadPop 0.3s ease;
+}
+
+@keyframes leadPop {
+  from { opacity: 0; transform: scale(0.92) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.lead-modal-header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.lead-modal-icon {
+  font-size: 38px;
+  margin-bottom: 6px;
+}
+
+.lead-modal-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.lead-modal-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.lead-modal-benefits {
+  background: #f0f9ff;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.benefit-item {
+  font-size: 12px;
+  color: #0369a1;
+  padding: 3px 0;
+  line-height: 1.5;
+}
+
+.lead-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.lead-phone-input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+  letter-spacing: 1px;
+  font-family: inherit;
+}
+
+.lead-phone-input:focus {
+  border-color: var(--primary);
+}
+
+.lead-error {
+  min-height: 16px;
+  font-size: 12px;
+  color: var(--danger);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.lead-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 4px 0 12px;
+  cursor: pointer;
+}
+
+.lead-consent input[type="checkbox"] {
+  flex-shrink: 0;
+  margin-top: 2px;
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+}
+
+.lead-consent span {
+  flex: 1;
+}
+
+.lead-form .btn-primary {
+  margin-top: 0;
+}
+
+.lead-modal-footer {
+  text-align: center;
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 12px;
+}

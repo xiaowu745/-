@@ -30,6 +30,11 @@ class Settings(BaseSettings):
     deep_assessment_max_turns: int = 15
     score_dimensions: int = 6
 
+    # 私域转化 / 线索收集
+    admin_password: str = "admin123"  # 管理后台登录密码，生产环境务必改掉
+    wecom_webhook_url: str = ""  # 企业微信机器人 webhook，空字符串则不推送
+    lead_notify_enabled: bool = True  # 收到新线索是否推送企微通知
+
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
 

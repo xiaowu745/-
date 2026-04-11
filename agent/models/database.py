@@ -112,6 +112,47 @@ class ChatRecord(Base):
     created_at = Column(DateTime, default=datetime.now)
 
 
+class Lead(Base):
+    """私域线索（用户留资记录）
+
+    用户在看报告前被弹窗拦截，填入手机号并勾选同意后保存一条 Lead。
+    同一手机号 + 同一 session_id 视为同一条线索，会被 upsert。
+    """
+    __tablename__ = "leads"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    phone = Column(String(20), index=True)
+    session_id = Column(String(32), index=True, nullable=True)
+
+    # 冗余存储测评时填写的学生信息，方便后台直接查看和筛选
+    nickname = Column(String(50), nullable=True)
+    major = Column(String(50), nullable=True)
+    grade = Column(String(20), nullable=True)
+    school_tier = Column(String(20), nullable=True)
+
+    # 测评结果摘要（便于销售快速判断线索质量）
+    overall_score = Column(Integer, nullable=True)
+    weak_dimensions = Column(JSON, nullable=True)
+
+    # 来源渠道：report_gate / homepage / manual ...
+    source = Column(String(30), default="report_gate")
+
+    # 合规：用户是否勾选同意隐私条款 + 勾选时间
+    consent = Column(Integer, default=0)  # 0/1
+    consent_at = Column(DateTime, nullable=True)
+
+    # 请求元数据（用于反作弊和溯源）
+    ip = Column(String(45), nullable=True)
+    user_agent = Column(String(255), nullable=True)
+
+    # 销售跟进状态：new / contacted / converted / invalid
+    status = Column(String(20), default="new")
+    notes = Column(Text, nullable=True)
+
+    created_at = Column(DateTime, default=datetime.now, index=True)
+    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
+
+
 # ============ 数据库操作 ============
 
 def init_db():
@@ -214,5 +255,133 @@ def get_user_assessments(user_id: int) -> list[dict]:
             }
             for r in records
         ]
+    finally:
+        db.close()
+
+
+def _lead_to_dict(lead: "Lead") -> dict:
+    return {
+        "id": lead.id,
+        "phone": lead.phone,
+        "nickname": lead.nickname,
+        "major": lead.major,
+        "grade": lead.grade,
+        "school_tier": lead.school_tier,
+        "overall_score": lead.overall_score,
+        "weak_dimensions": lead.weak_dimensions,
+        "source": lead.source,
+        "status": lead.status,
+        "notes": lead.notes,
+        "session_id": lead.session_id,
+        "ip": lead.ip,
+        "created_at": lead.created_at.strftime("%Y-%m-%d %H:%M:%S") if lead.created_at else "",
+    }
+
+
+def upsert_lead(data: dict) -> dict:
+    """保存或更新一条线索。
+
+    以 (phone, session_id) 为去重键 —— 同一个人同一次测评多次提交手机号只算一次，
+    但同一个手机号在不同 session 里会有多条记录（方便看成长曲线）。
+    返回保存后的 dict 表示，以及是否为新建记录的标记。
+    """
+    db = get_db()
+    try:
+        phone = (data.get("phone") or "").strip()
+        session_id = data.get("session_id") or None
+
+        query = db.query(Lead).filter_by(phone=phone)
+        if session_id:
+            query = query.filter_by(session_id=session_id)
+        lead = query.order_by(Lead.created_at.desc()).first()
+
+        is_new = lead is None
+        if is_new:
+            lead = Lead(phone=phone, session_id=session_id)
+            db.add(lead)
+
+        # 覆盖字段（只覆盖非 None 的传入值，避免误清空）
+        for field in ("nickname", "major", "grade", "school_tier",
+                      "overall_score", "weak_dimensions", "source",
+                      "ip", "user_agent"):
+            val = data.get(field)
+            if val is not None:
+                setattr(lead, field, val)
+
+        if data.get("consent"):
+            lead.consent = 1
+            lead.consent_at = datetime.now()
+
+        db.commit()
+        db.refresh(lead)
+        result = _lead_to_dict(lead)
+        result["is_new"] = is_new
+        return result
+    finally:
+        db.close()
+
+
+def list_leads(
+    limit: int = 100,
+    offset: int = 0,
+    major: str | None = None,
+    grade: str | None = None,
+    status: str | None = None,
+    keyword: str | None = None,
+) -> dict:
+    """后台分页查询线索列表"""
+    db = get_db()
+    try:
+        query = db.query(Lead)
+        if major:
+            query = query.filter(Lead.major == major)
+        if grade:
+            query = query.filter(Lead.grade == grade)
+        if status:
+            query = query.filter(Lead.status == status)
+        if keyword:
+            like = f"%{keyword}%"
+            query = query.filter(
+                (Lead.phone.like(like)) | (Lead.nickname.like(like))
+            )
+        total = query.count()
+        rows = (
+            query.order_by(Lead.created_at.desc())
+            .offset(offset)
+            .limit(limit)
+            .all()
+        )
+        return {
+            "total": total,
+            "items": [_lead_to_dict(r) for r in rows],
+        }
+    finally:
+        db.close()
+
+
+def update_lead(lead_id: int, status: str | None = None, notes: str | None = None) -> dict | None:
+    """更新销售跟进状态或备注"""
+    db = get_db()
+    try:
+        lead = db.query(Lead).filter_by(id=lead_id).first()
+        if not lead:
+            return None
+        if status is not None:
+            lead.status = status
+        if notes is not None:
+            lead.notes = notes
+        db.commit()
+        db.refresh(lead)
+        return _lead_to_dict(lead)
+    finally:
+        db.close()
+
+
+def iter_leads_for_export():
+    """导出所有线索（生成器，流式写 CSV 避免大内存占用）"""
+    db = get_db()
+    try:
+        for lead in db.query(Lead).order_by(Lead.created_at.desc()).yield_per(200):
+            yield _lead_to_dict(lead)
     finally:
         db.close()

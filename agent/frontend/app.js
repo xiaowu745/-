@@ -445,7 +445,7 @@ async function sendDeepChat() {
         const reportBtn = document.createElement("button");
         reportBtn.className = "btn-primary";
         reportBtn.textContent = "查看测评报告 →";
-        reportBtn.onclick = () => generateReport();
+        reportBtn.onclick = () => requestLeadBeforeReport();
         reportBtn.style.margin = "8px 0";
         container.appendChild(reportBtn);
       }, 500);
@@ -458,7 +458,109 @@ async function sendDeepChat() {
 }
 
 function skipToReport() {
-  generateReport();
+  // 不直接生成报告，先走留资弹窗
+  requestLeadBeforeReport();
+}
+
+// ============ 留资弹窗（看报告前拦截） ============
+
+// 同一次会话内已经留过资就不重复弹窗
+let leadCaptured = false;
+
+function requestLeadBeforeReport() {
+  if (leadCaptured) {
+    generateReport();
+    return;
+  }
+  showLeadModal();
+}
+
+function showLeadModal() {
+  const modal = document.getElementById("lead-modal");
+  if (!modal) {
+    // 兜底：万一没找到弹窗直接放行
+    generateReport();
+    return;
+  }
+  modal.classList.add("show");
+  document.getElementById("lead-error").textContent = "";
+  document.getElementById("lead-phone").value = "";
+  document.getElementById("lead-consent").checked = false;
+  setTimeout(() => document.getElementById("lead-phone").focus(), 100);
+}
+
+function hideLeadModal() {
+  document.getElementById("lead-modal").classList.remove("show");
+}
+
+async function submitLead() {
+  const phoneEl = document.getElementById("lead-phone");
+  const consentEl = document.getElementById("lead-consent");
+  const errorEl = document.getElementById("lead-error");
+  const btn = document.getElementById("lead-submit-btn");
+
+  const phone = (phoneEl.value || "").trim();
+  errorEl.textContent = "";
+
+  if (!/^1[3-9]\d{9}$/.test(phone)) {
+    errorEl.textContent = "请输入正确的 11 位手机号";
+    phoneEl.focus();
+    return;
+  }
+  if (!consentEl.checked) {
+    errorEl.textContent = "请先勾选同意隐私条款";
+    return;
+  }
+
+  btn.disabled = true;
+  const originalText = btn.textContent;
+  btn.textContent = "提交中...";
+
+  try {
+    const payload = {
+      phone,
+      consent: true,
+      session_id: state.sessionId || null,
+      source: "report_gate",
+      nickname: state.profile.nickname || null,
+      major: state.profile.major || null,
+      grade: state.profile.grade || null,
+      school_tier: state.profile.school_tier || null,
+      overall_score: state.quickResult ? state.quickResult.overall_score : null,
+      weak_dimensions: state.quickResult ? state.quickResult.weak_dimensions : null,
+    };
+
+    const res = await fetch(`${API_BASE}/leads/submit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      errorEl.textContent = err.detail || "提交失败，请稍后再试";
+      btn.disabled = false;
+      btn.textContent = originalText;
+      return;
+    }
+
+    // 成功：关闭弹窗，继续看报告
+    leadCaptured = true;
+    hideLeadModal();
+    generateReport();
+  } catch (e) {
+    // 网络异常：允许用户继续看报告（不阻断），但也不标记为已留资
+    console.warn("lead submit failed:", e);
+    errorEl.textContent = "网络异常，点击下方按钮可直接查看报告";
+    btn.textContent = "跳过，直接看报告";
+    btn.disabled = false;
+    btn.onclick = () => {
+      hideLeadModal();
+      btn.onclick = submitLead;
+      btn.textContent = originalText;
+      generateReport();
+    };
+  }
 }
 
 async function generateReport() {

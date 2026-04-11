@@ -14,6 +14,7 @@ from api.report import router as report_router
 from api.interview import router as interview_router
 from api.chat import router as chat_router
 from api.user import router as user_router
+from api.leads import router as leads_router
 
 settings = get_settings()
 
@@ -40,6 +41,7 @@ app.include_router(report_router, prefix="/api/report", tags=["报告"])
 app.include_router(interview_router, prefix="/api/interview", tags=["面试模拟"])
 app.include_router(chat_router, prefix="/api/chat", tags=["AI对话"])
 app.include_router(user_router, prefix="/api/user", tags=["用户"])
+app.include_router(leads_router, prefix="/api/leads", tags=["私域线索"])
 
 # 启动时初始化数据库
 @app.on_event("startup")
@@ -55,6 +57,12 @@ app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
 async def serve_index():
     """首页 → 前端H5页面"""
     return FileResponse(FRONTEND_DIR / "index.html")
+
+
+@app.get("/admin")
+async def serve_admin():
+    """线索管理后台页面（页面本身公开，数据接口需要 token）"""
+    return FileResponse(FRONTEND_DIR / "admin.html")
 
 
 @app.get("/health")

@@ -84,6 +84,16 @@ ALLOWED_DOMAIN=$DOMAIN
 
 # 生产模式
 DEBUG=false
+
+# ==== 私域转化 / 线索管理 ====
+# 管理后台登录密码（访问 https://${DOMAIN}/admin），请务必改掉
+ADMIN_PASSWORD=change-this-admin-password
+
+# 企业微信群机器人 webhook，有新线索会自动推送通知
+# 获取方法：企微群聊 → 群设置 → 群机器人 → 添加机器人 → 复制 webhook
+# 留空则不推送
+WECOM_WEBHOOK_URL=
+LEAD_NOTIFY_ENABLED=true
 ENVEOF
     echo "✅ .env 已创建（SECRET_KEY 已自动生成）"
     echo "⚠️  请稍后编辑 .env 填入 ANTHROPIC_API_KEY"
