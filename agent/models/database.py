@@ -21,7 +21,8 @@ settings = get_settings()
 if "postgresql" in settings.database_url:
     SQLALCHEMY_URL = settings.database_url.replace("+asyncpg", "")
 else:
-    SQLALCHEMY_URL = "sqlite:///./skill_agent.db"
+    # 直接使用环境变量中的配置，支持相对/绝对路径
+    SQLALCHEMY_URL = settings.database_url or "sqlite:///./skill_agent.db"
 
 engine = create_engine(
     SQLALCHEMY_URL,
@@ -114,8 +115,15 @@ class ChatRecord(Base):
 # ============ 数据库操作 ============
 
 def init_db():
-    """初始化数据库（创建表）"""
-    Base.metadata.create_all(bind=engine)
+    """初始化数据库（创建表）
+
+    捕获 "table already exists" 异常，避免多 worker 并发初始化时报错。
+    """
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception as e:
+        if "already exists" not in str(e):
+            raise
 
 
 def get_db() -> Session:
