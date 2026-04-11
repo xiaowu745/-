@@ -7,11 +7,10 @@ services:
       - "8000:8000"
     volumes:
       - ./data:/app/data
-      - ./skill_agent.db:/app/skill_agent.db
     env_file:
       - .env
     environment:
-      - DATABASE_URL=sqlite:///./skill_agent.db
+      - DATABASE_URL=sqlite:////app/data/skill_agent.db
       - DEBUG=false
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
