@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# 工科导航 - 一键部署脚本（兼容 Ubuntu / CentOS / 阿里云）
+# 荆工智匠 - 一键部署脚本（兼容 Ubuntu / CentOS / 阿里云）
 # 使用方法: bash deploy.sh <你的域名> <Git仓库地址>
 # ============================================================
 
@@ -11,7 +11,7 @@ REPO_URL=${2:?"用法: bash deploy.sh <域名> <Git仓库地址>"}
 PROJECT_DIR="/opt/skill-agent"
 
 echo "=========================================="
-echo "  工科导航 一键部署"
+echo "  荆工智匠 一键部署"
 echo "  域名:   $DOMAIN"
 echo "  仓库:   $REPO_URL"
 echo "=========================================="
@@ -94,6 +94,11 @@ ADMIN_PASSWORD=change-this-admin-password
 # 留空则不推送
 WECOM_WEBHOOK_URL=
 LEAD_NOTIFY_ENABLED=true
+
+# ==== 微信小程序配置 ====
+# 在微信公众平台注册小程序后获取
+WECHAT_APP_ID=
+WECHAT_APP_SECRET=
 ENVEOF
     echo "✅ .env 已创建（SECRET_KEY 已自动生成）"
     echo "⚠️  请稍后编辑 .env 填入 ANTHROPIC_API_KEY"

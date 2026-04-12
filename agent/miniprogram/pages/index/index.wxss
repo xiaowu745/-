@@ -1,0 +1,15 @@
+/* pages/index/index.wxss - 荆工智匠首页样式 */
+
+/* 加载提示容器（仅在 web-view URL 未就绪时显示） */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.loading-text {
+  font-size: 32rpx;
+  color: #999999;
+}

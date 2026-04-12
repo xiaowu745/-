@@ -5,120 +5,120 @@
     {
       "id": "C01",
       "dimension": "theory",
-      "question": "关于计算机网络，以下哪个最符合你的现状？",
+      "question": "TCP 建立连接（三次握手）和断开连接（四次挥手）的过程，你能说清楚吗？",
       "options": [
-        {"text": "知道什么是IP地址，但OSI七层模型记不全", "score": 1},
-        {"text": "能说清TCP/IP协议族，知道常见协议的作用", "score": 2},
-        {"text": "理解路由协议工作原理，能分析网络架构", "score": 3},
-        {"text": "能独立设计企业级网络方案，考虑冗余和安全", "score": 4}
+        {"text": "知道 TCP 和 UDP 的区别，但握手细节说不清", "score": 1},
+        {"text": "能说出 SYN → SYN+ACK → ACK 的基本流程", "score": 2},
+        {"text": "理解序列号/确认号的变化，能解释为什么断开是四次而不是三次", "score": 3},
+        {"text": "能分析 TIME_WAIT 状态的作用，理解 SYN Flood 攻击原理和防御手段", "score": 4}
       ],
       "applicable_majors": ["network_engineering", "computer_science", "iot"]
     },
     {
       "id": "C02",
       "dimension": "theory",
-      "question": "关于电路基础（模电/数电），以下哪个最符合你？",
+      "question": "运算放大器的虚短和虚断概念，你能正确应用来分析电路吗？",
       "options": [
-        {"text": "学过但基本还给老师了，看电路图比较吃力", "score": 1},
-        {"text": "能看懂基本电路图，知道常用元器件的功能", "score": 2},
-        {"text": "能分析中等复杂度的电路，理解信号流向", "score": 3},
-        {"text": "能自己设计功能电路并计算参数", "score": 4}
+        {"text": "学过运放但概念很模糊，不太会分析电路", "score": 1},
+        {"text": "知道虚短虚断的定义，能分析基本的反相/同相放大电路", "score": 2},
+        {"text": "能用虚短虚断分析加法器、差分放大器、积分器等常见运放电路", "score": 3},
+        {"text": "能自行设计运放应用电路（如有源滤波器、信号调理电路），并考虑带宽和失真", "score": 4}
       ],
       "applicable_majors": ["electronic_info", "automation", "electrical", "iot"]
     },
     {
       "id": "C03",
       "dimension": "programming",
-      "question": "关于C语言编程，以下哪个最符合你？",
+      "question": "C语言中指针和数组的关系，以及函数指针的使用，你掌握到什么程度？",
       "options": [
-        {"text": "学过语法但写代码经常报错，调试困难", "score": 1},
-        {"text": "能独立完成课程实验（如排序、链表），但超过300行就吃力", "score": 2},
-        {"text": "做过1-2个完整小项目，能熟练使用指针和结构体", "score": 3},
-        {"text": "参加过编程竞赛/写过嵌入式项目/贡献过开源代码", "score": 4}
+        {"text": "指针的概念还比较模糊，经常搞混 *p 和 &p", "score": 1},
+        {"text": "能用指针遍历数组、做函数传参，但二级指针和函数指针不太会", "score": 2},
+        {"text": "理解指针数组和数组指针的区别，能用函数指针做回调，会动态内存管理", "score": 3},
+        {"text": "能写泛型容器（void* 配合函数指针），理解内存对齐，会用 valgrind 检测内存问题", "score": 4}
       ],
       "applicable_majors": ["all"]
     },
     {
       "id": "C04",
       "dimension": "programming",
-      "question": "关于Python编程，以下哪个最符合你？",
+      "question": "Python 中装饰器（decorator）和生成器（generator）你用过吗？",
       "options": [
-        {"text": "没学过/刚开始学，能写print和for循环", "score": 1},
-        {"text": "能写简单脚本处理数据，用过几个常用库", "score": 2},
-        {"text": "做过完整项目（爬虫/数据分析/Web），理解面向对象", "score": 3},
-        {"text": "熟练使用多个框架，能写自动化工具或后端服务", "score": 4}
+        {"text": "没用过，不太清楚这些概念", "score": 1},
+        {"text": "见过 @装饰器 语法和 yield 关键字，但自己不会写", "score": 2},
+        {"text": "能写简单装饰器（如计时、鉴权），理解 yield 的惰性求值和 send() 方法", "score": 3},
+        {"text": "能写带参数的装饰器和类装饰器，用过 asyncio/协程，理解 GIL 的影响和规避策略", "score": 4}
       ],
       "applicable_majors": ["all"]
     },
     {
       "id": "C05",
       "dimension": "hardware",
-      "question": "关于动手实操，以下哪个最符合你？",
+      "question": "使用示波器测量一个未知信号，你的操作流程和分析能力如何？",
       "options": [
-        {"text": "基本没怎么动过手，实验课也是跟着做完就忘", "score": 1},
-        {"text": "能按照教程完成实验，但脱离教程就不太行", "score": 2},
-        {"text": "能独立完成实训项目，会使用常用测试仪器", "score": 3},
-        {"text": "自己做过完整的硬件/网络/系统项目，能排查各种故障", "score": 4}
+        {"text": "没用过示波器或只在旁边看别人操作过", "score": 1},
+        {"text": "能打开示波器连接探头看到波形，但不太会调节触发和时基", "score": 2},
+        {"text": "能正确设置触发方式、时基和电压档位，读出频率/幅值/占空比，判断信号质量", "score": 3},
+        {"text": "能用示波器做FFT频谱分析、协议解码（I2C/SPI/UART），配合信号源做系统级调试", "score": 4}
       ],
       "applicable_majors": ["all"]
     },
     {
       "id": "C06",
       "dimension": "tools",
-      "question": "关于Linux操作系统，以下哪个最符合你？",
+      "question": "在 Linux 下排查一个服务启动失败的问题，你会怎么做？",
       "options": [
-        {"text": "没用过/只知道有这个东西", "score": 1},
-        {"text": "装过虚拟机，会基本命令(ls/cd/mkdir)", "score": 2},
-        {"text": "能在Linux下编译程序、配置服务、写Shell脚本", "score": 3},
-        {"text": "熟练使用Linux做开发/运维，理解系统原理", "score": 4}
+        {"text": "Linux 操作不熟练，遇到问题只会百度复制命令", "score": 1},
+        {"text": "会看 systemctl status 和日志文件，但定位问题比较慢", "score": 2},
+        {"text": "能用 journalctl/dmesg 查日志、用 strace/lsof 定位问题、会编写 systemd unit 文件", "score": 3},
+        {"text": "能做完整的 Linux 性能调优（top/vmstat/iostat/perf），写过自动化部署脚本（Ansible/Shell）", "score": 4}
       ],
       "applicable_majors": ["all"]
     },
     {
       "id": "C07",
       "dimension": "project",
-      "question": "关于项目经验，以下哪个最符合你？",
+      "question": "从需求分析到最终上线，你完整经历过几次？",
       "options": [
-        {"text": "只做过课程作业，没有独立完整的项目", "score": 1},
-        {"text": "参加过课程设计或实训，做过模块级别的工作", "score": 2},
-        {"text": "独立完成过1-2个完整项目，能从头到尾说清楚", "score": 3},
-        {"text": "做过3个以上项目 / 参加过竞赛并获奖 / 有实习项目经验", "score": 4}
+        {"text": "没有完整做过，只做过课程作业的局部模块", "score": 1},
+        {"text": "做过课程设计，但跳过了需求分析和部署阶段", "score": 2},
+        {"text": "完整经历过至少1次：需求分析→方案设计→编码实现→测试→部署上线", "score": 3},
+        {"text": "多次经历完整流程，能编写项目计划书/技术方案/验收报告，有甲方沟通或实习经验", "score": 4}
       ],
       "applicable_majors": ["all"]
     },
     {
       "id": "C08",
       "dimension": "project",
-      "question": "你写过简历吗？简历上的项目经历情况？",
+      "question": "面试中让你用 STAR 法则讲一个项目经历，你准备到什么程度？",
       "options": [
-        {"text": "还没写过简历，不知道该写什么", "score": 1},
-        {"text": "有简历，但项目经历只有课程设计", "score": 2},
-        {"text": "简历上有1-2个拿得出手的项目，能讲清技术细节", "score": 3},
-        {"text": "简历充实，有项目+实习+竞赛，面试聊技术不慌", "score": 4}
+        {"text": "不知道什么是 STAR 法则，也没有可以讲的项目", "score": 1},
+        {"text": "知道要讲情境/任务/行动/结果，但技术细节讲不深", "score": 2},
+        {"text": "能讲清楚技术选型原因、核心难点的解决过程、有量化的成果数据", "score": 3},
+        {"text": "准备了3+个不同侧重的项目故事，能根据面试岗位灵活切换，有实习/竞赛的亮点", "score": 4}
       ],
       "applicable_majors": ["all"]
     },
     {
       "id": "C09",
       "dimension": "soft_skill",
-      "question": "关于团队协作和沟通，以下哪个最符合你？",
+      "question": "在团队中遇到技术方案分歧（比如选A框架还是B框架），你通常怎么处理？",
       "options": [
-        {"text": "不太善于表达技术想法，团队合作中偏被动", "score": 1},
-        {"text": "能在团队中完成分配的任务，有基本的沟通能力", "score": 2},
-        {"text": "能主动协调团队工作，清楚表达技术方案", "score": 3},
-        {"text": "有带队经验，能做技术汇报和方案讲解", "score": 4}
+        {"text": "一般听别人的决定，自己没什么意见", "score": 1},
+        {"text": "会提出自己的看法，但不太会有理有据地说服对方", "score": 2},
+        {"text": "会准备对比数据（性能/学习成本/社区活跃度）来讨论，尊重团队最终决策", "score": 3},
+        {"text": "有过多次技术方案评审经验，能主持讨论、做POC验证、输出选型报告", "score": 4}
       ],
       "applicable_majors": ["all"]
     },
     {
       "id": "C10",
       "dimension": "soft_skill",
-      "question": "关于技术文档写作，以下哪个最符合你？",
+      "question": "让你给非技术人员（如客户/领导）讲解一个技术方案，你能做到什么程度？",
       "options": [
-        {"text": "实验报告都写得很痛苦，格式经常不规范", "score": 1},
-        {"text": "能写出结构清楚的实验报告和课程设计文档", "score": 2},
-        {"text": "能写技术方案文档，包括需求分析、系统设计、测试报告", "score": 3},
-        {"text": "写过正式的项目文档/技术博客/投过论文", "score": 4}
+        {"text": "不太会调整表达方式，容易说太多术语让对方听不懂", "score": 1},
+        {"text": "能用通俗语言解释基本概念，但遇到追问容易卡壳", "score": 2},
+        {"text": "能用类比和图示让对方理解方案核心思路，并回答常见疑问", "score": 3},
+        {"text": "有过正式的客户汇报/投标答辩经验，能根据听众实时调整讲解深度", "score": 4}
       ],
       "applicable_majors": ["all"]
     }

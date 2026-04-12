@@ -1,0 +1,19 @@
+<!--
+  index.wxml - 荆工智匠小程序首页
+  使用 web-view 组件加载 H5 测评平台页面。
+  URL 中会附带微信登录凭证 wx_code，供 H5 端完成用户身份识别。
+-->
+
+<!-- 当 H5 URL 准备就绪时，显示 web-view 加载页面 -->
+<web-view
+  wx:if="{{url}}"
+  src="{{url}}"
+  bindmessage="onWebViewMessage"
+  bindload="onWebViewLoad"
+  binderror="onWebViewError"
+/>
+
+<!-- URL 未就绪时显示加载提示 -->
+<view wx:else class="loading-container">
+  <view class="loading-text">正在加载荆工智匠...</view>
+</view>

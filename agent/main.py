@@ -1,4 +1,4 @@
-"""工科导航 - 技能测评 Agent 服务入口"""
+"""荆工智匠 - 技能测评 Agent 服务入口"""
 
 from pathlib import Path
 
@@ -15,6 +15,7 @@ from api.interview import router as interview_router
 from api.chat import router as chat_router
 from api.user import router as user_router
 from api.leads import router as leads_router
+from api.wechat import router as wechat_router
 
 settings = get_settings()
 
@@ -28,7 +29,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"] if settings.debug else [
         f"https://{settings.allowed_domain}",
-        "https://servicewechat.com",  # 微信小程序
+        f"http://{settings.allowed_domain}",
+        "https://servicewechat.com",  # 微信小程序 web-view
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -42,6 +44,7 @@ app.include_router(interview_router, prefix="/api/interview", tags=["面试模�
 app.include_router(chat_router, prefix="/api/chat", tags=["AI对话"])
 app.include_router(user_router, prefix="/api/user", tags=["用户"])
 app.include_router(leads_router, prefix="/api/leads", tags=["私域线索"])
+app.include_router(wechat_router, prefix="/api/wechat", tags=["微信小程序"])
 
 # 启动时初始化数据库
 @app.on_event("startup")

@@ -4,7 +4,7 @@ from functools import lru_cache
 
 class Settings(BaseSettings):
     # 应用配置
-    app_name: str = "工科导航 - 技能测评 Agent"
+    app_name: str = "荆工智匠 - 技能测评 Agent"
     app_version: str = "0.1.0"
     debug: bool = True
 
@@ -34,6 +34,10 @@ class Settings(BaseSettings):
     admin_password: str = "admin123"  # 管理后台登录密码，生产环境务必改掉
     wecom_webhook_url: str = ""  # 企业微信机器人 webhook，空字符串则不推送
     lead_notify_enabled: bool = True  # 收到新线索是否推送企微通知
+
+    # 微信小程序配置（用于小程序内嵌 H5 + 获取用户 openid）
+    wechat_app_id: str = ""
+    wechat_app_secret: str = ""
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 

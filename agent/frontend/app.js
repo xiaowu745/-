@@ -1,5 +1,5 @@
 /**
- * 工科导航 - 前端应用逻辑
+ * 荆工智匠 - 前端应用逻辑
  */
 
 const API_BASE = window.location.hostname === "localhost"
@@ -12,6 +12,7 @@ const state = {
   // 学生信息
   profile: {
     nickname: "",
+    phone: "",
     major: "",
     grade: "",
     school_tier: "普通本科",
@@ -58,20 +59,47 @@ function startAssessment() {
 
 function submitProfile() {
   const nickname = document.getElementById("input-nickname").value.trim();
+  const phone = document.getElementById("input-phone").value.trim();
   const majorEl = document.querySelector("#major-select .selected");
   const gradeEl = document.querySelector("#grade-select .selected");
   const schoolEl = document.querySelector("#school-select .selected");
 
   if (!nickname) return alert("请输入昵称");
+  if (!phone || !/^1[3-9]\d{9}$/.test(phone)) return alert("请输入正确的11位手机号");
   if (!majorEl) return alert("请选择专业");
   if (!gradeEl) return alert("请选择年级");
 
   state.profile.nickname = nickname;
+  state.profile.phone = phone;
   state.profile.major = majorEl.dataset.value;
   state.profile.grade = gradeEl.dataset.value;
   state.profile.school_tier = schoolEl ? schoolEl.dataset.value : "普通本科";
 
+  // 提前把手机号留资（不需要等到报告前，确保每一个开始测评的人都留下联系方式）
+  earlyLeadCapture();
+
   loadQuestions();
+}
+
+async function earlyLeadCapture() {
+  try {
+    await fetch(`${API_BASE}/leads/submit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        phone: state.profile.phone,
+        consent: true,
+        source: "profile_form",
+        nickname: state.profile.nickname,
+        major: state.profile.major,
+        grade: state.profile.grade,
+        school_tier: state.profile.school_tier,
+      }),
+    });
+  } catch (e) {
+    // 留资失败不影响用户做题
+    console.warn("early lead capture failed:", e);
+  }
 }
 
 async function loadQuestions() {
@@ -105,77 +133,77 @@ function loadBuiltinQuestions() {
   };
 
   state.questions = [
-    { id: "B01", dimension: "theory", question: "关于你的专业核心课程，以下哪个最符合你？", options: [
-      { text: "很多课只是及格水平，核心概念记不太清", score: 1 },
-      { text: "大部分课能拿70-80分，基本概念都了解", score: 2 },
-      { text: "核心课85分以上，能深入理解和应用", score: 3 },
-      { text: "专业课名列前茅，能给同学讲解原理", score: 4 }
+    { id: "B01", dimension: "theory", question: "TCP 三次握手的第二步，服务端发送的报文包含哪些标志位？", options: [
+      { text: "不确定，TCP 握手的细节记不清了", score: 1 },
+      { text: "SYN 和 ACK 都有，但不太清楚序列号的变化", score: 2 },
+      { text: "SYN+ACK，序列号为服务端 ISN，确认号为客户端 ISN+1", score: 3 },
+      { text: "以上都清楚，还能解释 SYN Flood 攻击原理及防御方法", score: 4 }
     ]},
-    { id: "B02", dimension: "theory", question: "关于计算机网络/电路基础，以下哪个最符合你？", options: [
-      { text: "学过但基本还给老师了", score: 1 },
-      { text: "能说清基本概念和原理", score: 2 },
-      { text: "能分析中等复杂度的问题", score: 3 },
-      { text: "能独立设计方案或解决实际问题", score: 4 }
+    { id: "B02", dimension: "theory", question: "OSPF 路由协议中，Router LSA 和 Network LSA 的区别是什么？", options: [
+      { text: "知道 OSPF 是路由协议，但 LSA 类型分不清", score: 1 },
+      { text: "知道 LSA 有多种类型，大概了解它们作用不同", score: 2 },
+      { text: "Router LSA 描述路由器直连链路，Network LSA 描述多路访问网络上的路由器列表", score: 3 },
+      { text: "能完整解释 1-5 类 LSA 的产生条件和泛洪范围，并做过多区域 OSPF 的实际配置", score: 4 }
     ]},
-    { id: "B03", dimension: "programming", question: "关于编程能力（C/Python/Java等），以下哪个最符合你？", options: [
-      { text: "学过语法但写代码经常报错", score: 1 },
-      { text: "能独立完成课程实验，但超过300行就吃力", score: 2 },
-      { text: "做过1-2个完整小项目，能熟练调试", score: 3 },
-      { text: "参加过编程竞赛/写过开源项目/有实习开发经验", score: 4 }
+    { id: "B03", dimension: "programming", question: "Python 中 list 和 tuple 的核心区别以及使用场景？", options: [
+      { text: "知道都是容器类型，但说不清具体区别", score: 1 },
+      { text: "list 可变、tuple 不可变，语法上一个用 [] 一个用 ()", score: 2 },
+      { text: "理解不可变性带来的 hashable 特性（tuple 可做 dict 的 key），以及性能差异", score: 3 },
+      { text: "还能解释 namedtuple/dataclass 的使用场景，以及在多线程环境下不可变对象的优势", score: 4 }
     ]},
-    { id: "B04", dimension: "programming", question: "关于Python编程，以下哪个最符合你？", options: [
-      { text: "没学过/刚开始学", score: 1 },
-      { text: "能写简单脚本，用过几个常用库", score: 2 },
-      { text: "做过完整项目（爬虫/数据分析/Web等）", score: 3 },
-      { text: "熟练使用多个框架，能写自动化工具", score: 4 }
+    { id: "B04", dimension: "programming", question: "用 C 语言实现一个链表的节点删除操作，你能做到什么程度？", options: [
+      { text: "链表的结构体定义都写不太出来", score: 1 },
+      { text: "能写出结构体和简单的遍历，但删除节点时指针操作经常出错", score: 2 },
+      { text: "能正确处理头节点/尾节点/中间节点的删除，会用 free() 释放内存", score: 3 },
+      { text: "还能实现双向链表、环形链表的增删改查，理解内存泄漏检测和 valgrind 使用", score: 4 }
     ]},
-    { id: "B05", dimension: "hardware", question: "关于动手实操能力，以下哪个最符合你？", options: [
-      { text: "基本没怎么动过手，实验课跟着做完就忘", score: 1 },
-      { text: "能按照教程完成实验，脱离教程就不太行", score: 2 },
-      { text: "能独立完成实训项目，会使用常用仪器", score: 3 },
-      { text: "自己做过完整的硬件/网络/系统项目", score: 4 }
+    { id: "B05", dimension: "hardware", question: "使用万用表测量一个未知电阻，你的操作流程是？", options: [
+      { text: "万用表的档位选择都不太确定", score: 1 },
+      { text: "知道选电阻档、调零、读数，但实际操作不太熟练", score: 2 },
+      { text: "能正确选档、短接调零、读取色环/数值、判断误差范围，会区分二线/四线测量法", score: 3 },
+      { text: "能用万用表做完整的电路故障排查（测通断、电压、电流），还会用示波器分析信号波形", score: 4 }
     ]},
-    { id: "B06", dimension: "hardware", question: "关于专业设备操作（网络设备/PLC/示波器/机床等），以下哪个最符合你？", options: [
-      { text: "基本没碰过真设备", score: 1 },
-      { text: "在实验课上操作过，按指导书能完成", score: 2 },
-      { text: "能独立操作和配置，做过调试", score: 3 },
-      { text: "熟练操作，能处理故障和复杂任务", score: 4 }
+    { id: "B06", dimension: "hardware", question: "交换机上配置 VLAN 时，Access 口和 Trunk 口的区别？", options: [
+      { text: "听过 VLAN 但没实际配置过，不清楚端口类型", score: 1 },
+      { text: "知道 Access 口只属于一个 VLAN，Trunk 口可以传多个 VLAN 的数据", score: 2 },
+      { text: "理解 802.1Q 标签的添加/剥离过程，能在真实设备上做 VLAN 划分和跨交换机互通", score: 3 },
+      { text: "能做三层交换+VLAN 间路由+DHCP Relay，处理过生产环境的 VLAN 故障", score: 4 }
     ]},
-    { id: "B07", dimension: "tools", question: "关于Linux操作系统，以下哪个最符合你？", options: [
-      { text: "没用过/只知道有这个东西", score: 1 },
-      { text: "装过虚拟机，会基本命令(ls/cd/mkdir)", score: 2 },
-      { text: "能在Linux下编译程序、配置服务", score: 3 },
-      { text: "熟练使用Linux做开发/运维", score: 4 }
+    { id: "B07", dimension: "tools", question: "在 Linux 下查看某个端口被哪个进程占用，你会用什么命令？", options: [
+      { text: "不太会在 Linux 下操作，可能要搜一下", score: 1 },
+      { text: "知道可以用 netstat 或 ss 命令，但具体参数记不住", score: 2 },
+      { text: "ss -tlnp 或 netstat -tlnp 直接查看，还会用 lsof -i :端口号", score: 3 },
+      { text: "熟练使用 systemd/journalctl/iptables/tcpdump 等做系统级排查和服务管理", score: 4 }
     ]},
-    { id: "B08", dimension: "tools", question: "关于行业专用工具/软件，以下哪个最符合你？", options: [
-      { text: "基本没用过专业工具", score: 1 },
-      { text: "会用1-2个工具做基本操作", score: 2 },
-      { text: "能熟练使用核心工具完成任务", score: 3 },
-      { text: "精通工具链，能选择和组合不同工具", score: 4 }
+    { id: "B08", dimension: "tools", question: "关于 Git 版本管理，以下哪个最符合你的水平？", options: [
+      { text: "没用过 Git，代码用 U 盘或微信传", score: 1 },
+      { text: "会 git add/commit/push 基本流程，但遇到冲突就慌", score: 2 },
+      { text: "能处理合并冲突、用分支管理功能开发、会 git log/diff/stash", score: 3 },
+      { text: "熟练使用 rebase/cherry-pick/子模块、参与过多人协作项目的 PR/Code Review 流程", score: 4 }
     ]},
-    { id: "B09", dimension: "project", question: "关于项目经验，以下哪个最符合你？", options: [
-      { text: "只做过课程作业，没有独立项目", score: 1 },
-      { text: "参加过课程设计或实训", score: 2 },
-      { text: "独立完成过1-2个完整项目", score: 3 },
-      { text: "做过3个以上项目/参加竞赛获奖/有实习经验", score: 4 }
+    { id: "B09", dimension: "project", question: "你独立做过的最完整的技术项目是什么级别？", options: [
+      { text: "只做过课堂练习和课后作业", score: 1 },
+      { text: "做过课程设计，但主要是改模板/参考代码", score: 2 },
+      { text: "从零开始做过一个完整项目（有需求分析、架构设计、编码、测试、部署全流程）", score: 3 },
+      { text: "做过 3+ 个独立项目 / 竞赛获省级以上奖项 / 有企业实习开发经验", score: 4 }
     ]},
-    { id: "B10", dimension: "project", question: "你的简历上项目经历情况？", options: [
-      { text: "还没写过简历", score: 1 },
-      { text: "有简历，但项目经历只有课程设计", score: 2 },
-      { text: "简历上有1-2个拿得出手的项目", score: 3 },
-      { text: "简历充实，有项目+实习+竞赛", score: 4 }
+    { id: "B10", dimension: "project", question: "如果让你现在面试，能讲清楚一个技术项目的完整架构和难点吗？", options: [
+      { text: "没有可以讲的项目", score: 1 },
+      { text: "能说出做了什么，但技术细节和为什么这样设计说不太清", score: 2 },
+      { text: "能讲清架构选型原因、关键技术难点及解决方案、数据流向", score: 3 },
+      { text: "能从业务需求→技术选型→实现→性能优化→踩坑经验完整复盘，有量化成果", score: 4 }
     ]},
-    { id: "B11", dimension: "soft_skill", question: "关于团队协作和沟通，以下哪个最符合你？", options: [
-      { text: "不太善于表达，团队合作中偏被动", score: 1 },
-      { text: "能完成分配的任务，有基本沟通能力", score: 2 },
-      { text: "能主动协调团队，清楚表达技术方案", score: 3 },
-      { text: "有带队经验，能做技术汇报和方案讲解", score: 4 }
+    { id: "B11", dimension: "soft_skill", question: "如果团队项目中，一个同学代码写得有问题导致整体延期，你会怎么处理？", options: [
+      { text: "不知道怎么开口，可能就自己默默帮改或等他自己发现", score: 1 },
+      { text: "会直接指出来但不太会顾及对方感受，容易引起冲突", score: 2 },
+      { text: "先私下沟通指出具体问题，一起讨论解决方案，帮他排查而不是代写", score: 3 },
+      { text: "有过多次团队管理经验，会做 Code Review 制度，用流程规避而不是靠人情", score: 4 }
     ]},
-    { id: "B12", dimension: "soft_skill", question: "关于技术文档写作，以下哪个最符合你？", options: [
-      { text: "实验报告都写得很痛苦", score: 1 },
-      { text: "能写出结构清楚的实验报告", score: 2 },
-      { text: "能写技术方案文档", score: 3 },
-      { text: "写过正式项目文档/技术博客/论文", score: 4 }
+    { id: "B12", dimension: "soft_skill", question: "让你写一份「校园网络改造方案」的技术文档，你能做到什么程度？", options: [
+      { text: "不知道技术文档该包含哪些内容", score: 1 },
+      { text: "能列出目录结构（需求、方案、预算），但内容比较空泛", score: 2 },
+      { text: "能写出完整的文档（含拓扑图、IP规划表、设备选型、施工计划、预算清单）", score: 3 },
+      { text: "写过正式投标/验收文档，能做答辩汇报，文档通过了甲方或评委的审核", score: 4 }
     ]},
   ];
 
@@ -478,15 +506,20 @@ function requestLeadBeforeReport() {
 function showLeadModal() {
   const modal = document.getElementById("lead-modal");
   if (!modal) {
-    // 兜底：万一没找到弹窗直接放行
     generateReport();
     return;
   }
   modal.classList.add("show");
   document.getElementById("lead-error").textContent = "";
-  document.getElementById("lead-phone").value = "";
-  document.getElementById("lead-consent").checked = false;
-  setTimeout(() => document.getElementById("lead-phone").focus(), 100);
+  // 预填 profile 阶段已收集的手机号
+  document.getElementById("lead-phone").value = state.profile.phone || "";
+  document.getElementById("lead-consent").checked = !!state.profile.phone;
+  if (state.profile.phone) {
+    // 已经有手机号，聚焦到提交按钮
+    document.getElementById("lead-submit-btn").focus();
+  } else {
+    setTimeout(() => document.getElementById("lead-phone").focus(), 100);
+  }
 }
 
 function hideLeadModal() {
@@ -776,6 +809,36 @@ function getGradeName(value) {
   const names = { freshman: "大一", sophomore: "大二", junior: "大三", senior: "大四" };
   return names[value] || value;
 }
+
+// ============ 微信小程序环境检测 ============
+
+// 检测是否在微信/小程序 web-view 中打开
+function isWeChatEnv() {
+  const ua = navigator.userAgent.toLowerCase();
+  return ua.indexOf("micromessenger") !== -1 || ua.indexOf("miniprogram") !== -1;
+}
+
+// 小程序通过 URL 参数传入 wx_code，H5 自动换取 openid
+(async function initWxLogin() {
+  const params = new URLSearchParams(window.location.search);
+  const wxCode = params.get("wx_code");
+  if (!wxCode) return;
+
+  try {
+    const res = await fetch(`${API_BASE}/wechat/code2session`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: wxCode }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      state.wxOpenId = data.openid;
+      console.log("[WX] openid obtained");
+    }
+  } catch (e) {
+    console.warn("[WX] code2session failed:", e);
+  }
+})();
 
 // 回车发送
 document.addEventListener("keydown", (e) => {
