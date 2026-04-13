@@ -71,3 +71,20 @@ async def serve_admin():
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+
+@app.get("/{filename:path}")
+async def serve_root_files(filename: str):
+    """根目录下的静态校验文件（微信小程序业务域名校验、ICP 等）
+
+    仅放行白名单后缀，避免成为目录浏览。
+    """
+    # 只允许这些类型的文件从根路径访问
+    if not (filename.startswith("MP_verify_") or filename in {"robots.txt", "favicon.ico"}):
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="Not Found")
+    target = FRONTEND_DIR / filename
+    if not target.is_file():
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="Not Found")
+    return FileResponse(target)
