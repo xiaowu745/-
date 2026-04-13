@@ -209,7 +209,10 @@ async def submit_lead(req: LeadSubmitRequest, request: Request):
 @router.post("/admin/login")
 async def admin_login(req: AdminLoginRequest):
     """管理员登录（凭密码换 token）"""
-    if not hmac.compare_digest(req.password or "", settings.admin_password or ""):
+    # 用 bytes 比较，避免密码含中文等非 ASCII 字符时 compare_digest 报 TypeError
+    provided = (req.password or "").encode("utf-8")
+    expected = (settings.admin_password or "").encode("utf-8")
+    if not hmac.compare_digest(provided, expected):
         raise HTTPException(status_code=401, detail="密码错误")
     token = _create_admin_token()
     return {"token": token, "expires_in": 12 * 3600}
