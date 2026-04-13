@@ -92,8 +92,33 @@ def _require_admin(authorization: str | None):
         raise HTTPException(status_code=401, detail="token 无效或已过期")
 
 
+def _build_webhook_payload(webhook_url: str, content: str) -> dict:
+    """根据 webhook URL 自动识别平台，返回对应格式的请求体
+
+    支持：企业微信 / 飞书 / 钉钉
+    """
+    url = webhook_url.lower()
+    if "feishu.cn" in url or "larksuite.com" in url:
+        # 飞书机器人
+        return {"msg_type": "text", "content": {"text": content}}
+    if "dingtalk.com" in url:
+        # 钉钉机器人（注意钉钉要求 content 里包含关键词，否则会被拒）
+        return {"msgtype": "text", "text": {"content": content}}
+    # 默认按企业微信格式
+    return {"msgtype": "text", "text": {"content": content}}
+
+
+def _platform_name(webhook_url: str) -> str:
+    url = webhook_url.lower()
+    if "feishu.cn" in url or "larksuite.com" in url:
+        return "Feishu"
+    if "dingtalk.com" in url:
+        return "DingTalk"
+    return "WeCom"
+
+
 async def _notify_wecom(lead: dict):
-    """向企业微信群机器人推送新线索通知（失败不影响主流程）"""
+    """向群机器人推送新线索通知（自动识别企微/飞书/钉钉，失败不影响主流程）"""
     if not settings.lead_notify_enabled:
         return
     webhook = settings.wecom_webhook_url
@@ -115,13 +140,22 @@ async def _notify_wecom(lead: dict):
         f"来源：{lead.get('source') or '-'}\n"
         f"时间：{lead.get('created_at') or '-'}"
     )
-    payload = {"msgtype": "text", "text": {"content": content}}
+    payload = _build_webhook_payload(webhook, content)
+    platform = _platform_name(webhook)
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
-            await client.post(webhook, json=payload)
+            resp = await client.post(webhook, json=payload)
+            # 大多数平台返回 errcode/code = 0 表示成功，非 0 打印一下方便排查
+            try:
+                data = resp.json()
+                err = data.get("errcode") if "errcode" in data else data.get("code")
+                if err not in (None, 0):
+                    print(f"[{platform}] webhook returned error: {data}")
+            except Exception:
+                pass
     except Exception as e:
         # 推送失败只记录日志，不影响用户流程
-        print(f"[WeCom] webhook push failed: {e}")
+        print(f"[{platform}] webhook push failed: {e}")
 
 
 def _get_assessment_snapshot(session_id: str | None) -> dict:
