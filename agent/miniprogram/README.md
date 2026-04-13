@@ -28,13 +28,22 @@
 1. 打开本项目中的 `project.config.json` 文件。
 2. 将 `appid` 字段的值替换为你在微信公众平台获取的真实 AppID。
 
-### 4. 配置 H5 域名
+### 4. 配置 H5 访问地址
 
-1. 打开 `pages/index/index.js` 文件。
-2. 修改顶部的 `DOMAIN` 常量为你实际部署 H5 的域名：
-   ```javascript
-   const DOMAIN = 'jgzj.org.cn'  // 改为你的实际域名
-   ```
+打开 `pages/index/index.js` 文件，顶部有两个环境配置：
+
+```javascript
+// 正式环境（HTTPS，需业务域名白名单）
+const BASE_URL_PROD = 'https://jgzj.org.cn'
+// 开发环境（HTTP + 8000，需勾选"不校验合法域名"）
+const BASE_URL_DEV = 'http://jgzj.org.cn:8000'
+
+// 当前使用：默认正式环境；开发联调时改成 BASE_URL_DEV
+const BASE_URL = BASE_URL_PROD
+```
+
+- **ICP 备案完成前**：`const BASE_URL = BASE_URL_DEV`，并在开发者工具「详情 → 本地设置」勾选"不校验合法域名、web-view（业务域名）、TLS 版本以及 HTTPS 证书"
+- **ICP 备案完成后**：保持 `const BASE_URL = BASE_URL_PROD`，并在微信公众平台配置业务域名白名单
 
 ---
 

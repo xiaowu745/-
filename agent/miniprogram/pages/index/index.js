@@ -1,11 +1,20 @@
 // pages/index/index.js - 荆工智匠小程序首页逻辑
 
 /**
- * H5 平台部署域名（不含协议前缀）
- * 请修改为你实际部署的域名，例如 'exam.example.com'
- * 注意：该域名必须在微信公众平台「业务域名」白名单中配置
+ * H5 平台访问地址配置
+ *
+ * 开发期：ICP 备案未通过 → 用 http + 8000 端口，需在开发者工具勾选"不校验合法域名"
+ * 正式期：ICP 备案通过 + HTTPS 证书 + 业务域名白名单配置好 → 用 https
+ *
+ * 切换方式：把对应的那一行赋值给 BASE_URL 即可
  */
-const DOMAIN = 'jgzj.org.cn'
+// 正式环境（HTTPS，需业务域名白名单）
+const BASE_URL_PROD = 'https://jgzj.org.cn'
+// 开发环境（HTTP + 8000，需勾选"不校验合法域名"）
+const BASE_URL_DEV = 'http://jgzj.org.cn:8000'
+
+// 当前使用：默认正式环境；开发联调时改成 BASE_URL_DEV
+const BASE_URL = BASE_URL_PROD
 
 Page({
   data: {
@@ -31,11 +40,11 @@ Page({
 
   /**
    * 根据登录 code 构造 H5 页面的完整 URL
-   * 格式：https://{DOMAIN}/?wx_code={code}
+   * 格式：{BASE_URL}/?wx_code={code}
    * @param {string} code - 微信登录凭证
    */
   buildUrl: function (code) {
-    var fullUrl = 'https://' + DOMAIN + '/?wx_code=' + encodeURIComponent(code)
+    var fullUrl = BASE_URL + '/?wx_code=' + encodeURIComponent(code)
     console.log('[荆工智匠] 加载 H5 页面:', fullUrl)
     this.setData({
       url: fullUrl
