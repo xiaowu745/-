@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     # MiniMax API (OpenAI 兼容接口)
     minimax_api_key: str = ""
     minimax_base_url: str = "https://api.minimax.chat/v1"
-    minimax_model: str = "abab6.5s-chat"
+    minimax_model: str = "MiniMax-M2.7-highspeed"
 
     # 数据库
     database_url: str = "sqlite:///./skill_agent.db"
