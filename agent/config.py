@@ -8,9 +8,10 @@ class Settings(BaseSettings):
     app_version: str = "0.1.0"
     debug: bool = True
 
-    # Claude API
-    anthropic_api_key: str = ""
-    anthropic_model: str = "claude-sonnet-4-20250514"
+    # MiniMax API (OpenAI 兼容接口)
+    minimax_api_key: str = ""
+    minimax_base_url: str = "https://api.minimax.chat/v1"
+    minimax_model: str = "abab6.5s-chat"
 
     # 数据库
     database_url: str = "sqlite:///./skill_agent.db"

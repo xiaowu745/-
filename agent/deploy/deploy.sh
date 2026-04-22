@@ -73,8 +73,8 @@ echo "[3/7] 配置环境变量..."
 if [ ! -f .env ]; then
     SECRET=$(openssl rand -hex 32)
     cat > .env << ENVEOF
-# Claude API Key（必填，否则AI对话功能不可用）
-ANTHROPIC_API_KEY=your-api-key-here
+# MiniMax API Key（必填，否则AI对话功能不可用）
+MINIMAX_API_KEY=your-minimax-api-key-here
 
 # 安全密钥（已自动生成）
 SECRET_KEY=$SECRET
@@ -86,7 +86,7 @@ ALLOWED_DOMAIN=$DOMAIN
 DEBUG=false
 ENVEOF
     echo "✅ .env 已创建（SECRET_KEY 已自动生成）"
-    echo "⚠️  请稍后编辑 .env 填入 ANTHROPIC_API_KEY"
+    echo "⚠️  请稍后编辑 .env 填入 MINIMAX_API_KEY"
 else
     echo "✅ .env 已存在，跳过"
 fi
@@ -196,7 +196,7 @@ echo "  API文档:  https://$DOMAIN/docs"
 echo "  健康检查: https://$DOMAIN/health"
 echo ""
 echo "  📝 下一步："
-echo "  1. 编辑 .env 填入 ANTHROPIC_API_KEY："
+echo "  1. 编辑 .env 填入 MINIMAX_API_KEY："
 echo "     vim $PROJECT_DIR/agent/.env"
 echo "  2. 重启使 API Key 生效："
 echo "     cd $PROJECT_DIR/agent && docker-compose restart"

@@ -1,11 +1,11 @@
-"""Agent 核心 - 基于 Claude API 的对话管理"""
+"""Agent 核心 - 基于 MiniMax API 的对话管理"""
 
 import json
 import re
 import uuid
 from pathlib import Path
 
-import anthropic
+from openai import OpenAI
 
 from config import get_settings
 from agent.prompts import (
@@ -66,18 +66,21 @@ class SkillAssessmentAgent:
 
     def __init__(self):
         settings = get_settings()
-        self.client = anthropic.Anthropic(api_key=settings.anthropic_api_key)
-        self.model = settings.anthropic_model
+        self.client = OpenAI(
+            api_key=settings.minimax_api_key,
+            base_url=settings.minimax_base_url,
+        )
+        self.model = settings.minimax_model
 
-    def _call_claude(self, system: str, messages: list[dict], max_tokens: int = 2000) -> str:
-        """调用 Claude API"""
-        response = self.client.messages.create(
+    def _call_llm(self, system: str, messages: list[dict], max_tokens: int = 2000) -> str:
+        """调用 MiniMax API（OpenAI 兼容接口）"""
+        full_messages = [{"role": "system", "content": system}] + messages
+        response = self.client.chat.completions.create(
             model=self.model,
             max_tokens=max_tokens,
-            system=system,
-            messages=messages,
+            messages=full_messages,
         )
-        return response.content[0].text
+        return response.choices[0].message.content
 
     # ============================================================
     # 快速测评
@@ -155,7 +158,7 @@ class SkillAssessmentAgent:
         )
 
         # 生成开场白
-        opening = self._call_claude(
+        opening = self._call_llm(
             system=system_prompt,
             messages=[{
                 "role": "user",
@@ -182,7 +185,7 @@ class SkillAssessmentAgent:
         messages = sessions.get_messages(session_id)
 
         # 调用 Claude
-        response = self._call_claude(
+        response = self._call_llm(
             system=system_prompt,
             messages=messages,
             max_tokens=1500,
@@ -255,7 +258,7 @@ class SkillAssessmentAgent:
 
         system = SYSTEM_PERSONA + "\n\n" + report_prompt
 
-        report = self._call_claude(
+        report = self._call_llm(
             system=system,
             messages=[{
                 "role": "user",
@@ -302,7 +305,7 @@ class SkillAssessmentAgent:
         })
 
         # 面试官开场
-        opening = self._call_claude(
+        opening = self._call_llm(
             system=system,
             messages=[{
                 "role": "user",
@@ -323,7 +326,7 @@ class SkillAssessmentAgent:
         sessions.add_message(interview_session_id, "user", user_message)
         messages = sessions.get_messages(interview_session_id)
 
-        response = self._call_claude(
+        response = self._call_llm(
             system=system_prompt,
             messages=messages,
             max_tokens=1500,
@@ -402,7 +405,7 @@ class SkillAssessmentAgent:
             target_requirements=target_requirements,
         )
 
-        path = self._call_claude(
+        path = self._call_llm(
             system=system,
             messages=[{
                 "role": "user",

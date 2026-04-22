@@ -56,7 +56,7 @@ async def free_chat(req: FreeChatRequest):
     sessions.add_message(session_id, "user", req.message)
     messages = sessions.get_messages(session_id)
 
-    response = agent._call_claude(
+    response = agent._call_llm(
         system=FREE_CHAT_SYSTEM,
         messages=messages,
         max_tokens=1500,
