@@ -7,6 +7,7 @@ MVP阶段支持两种模式：
 
 import json
 from datetime import datetime
+from typing import Optional
 
 from sqlalchemy import (
     create_engine, Column, String, Integer, Text, DateTime, JSON, Float,
@@ -176,7 +177,7 @@ def save_assessment(session_id: str, data: dict):
         db.close()
 
 
-def get_assessment(session_id: str) -> dict | None:
+def get_assessment(session_id: str) -> Optional[dict]:
     """获取测评记录"""
     db = get_db()
     try:

@@ -2,6 +2,8 @@
 
 import json
 from pathlib import Path
+from typing import Optional
+
 from models.schemas import (
     Dimension, DimensionScore, DirectionMatch,
     QuickAnswer, StudentProfile, Major
@@ -172,7 +174,7 @@ def calculate_quick_assessment(
 def match_directions(
     student: StudentProfile,
     dimension_scores: list[DimensionScore],
-    interest_tags: list[str] | None = None,
+    interest_tags: Optional[list[str]] = None,
 ) -> list[DirectionMatch]:
     """
     匹配推荐方向
@@ -219,7 +221,7 @@ def _calculate_direction_match(
     direction: dict,
     score_map: dict,
     student: StudentProfile,
-    interest_tags: list[str] | None,
+    interest_tags: Optional[list[str]],
 ) -> int:
     """计算单个方向的匹配度"""
     base_score = 50  # 基础分

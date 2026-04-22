@@ -4,6 +4,7 @@ import json
 import re
 import uuid
 from pathlib import Path
+from typing import Optional
 
 from openai import OpenAI
 
@@ -44,7 +45,7 @@ class SessionStore:
         }
         return session_id
 
-    def get(self, session_id: str) -> dict | None:
+    def get(self, session_id: str) -> Optional[dict]:
         return self._sessions.get(session_id)
 
     def add_message(self, session_id: str, role: str, content: str):
