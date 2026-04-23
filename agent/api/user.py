@@ -50,6 +50,47 @@ def create_token(user_id: int) -> str:
     return f"{msg}.{_b64encode(sig)}"
 
 
+class SaveContactRequest(BaseModel):
+    session_id: str = ""
+    phone: str
+    wechat: str = ""
+    nickname: str = ""
+    major: str = ""
+    grade: str = ""
+
+
+@router.post("/save-contact")
+async def save_contact(req: SaveContactRequest):
+    """保存用户联系方式"""
+    db = get_db()
+    try:
+        if req.session_id:
+            record = db.query(AssessmentRecord).filter_by(session_id=req.session_id).first()
+            if record:
+                record.phone = req.phone
+                record.wechat = req.wechat
+                db.commit()
+
+        user = db.query(UserRecord).filter_by(phone=req.phone).first()
+        if not user:
+            user = UserRecord(
+                nickname=req.nickname or "未命名",
+                phone=req.phone,
+                wechat=req.wechat,
+            )
+            db.add(user)
+            db.commit()
+        else:
+            if req.wechat:
+                user.wechat = req.wechat
+            user.last_active = datetime.now()
+            db.commit()
+
+        return {"status": "ok", "message": "联系方式已保存"}
+    finally:
+        db.close()
+
+
 @router.post("/register", response_model=TokenResponse)
 async def register(req: RegisterRequest):
     """注册新用户"""

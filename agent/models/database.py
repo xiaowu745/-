@@ -43,6 +43,7 @@ class UserRecord(Base):
     openid = Column(String(128), unique=True, index=True, nullable=True)  # 微信openid
     nickname = Column(String(50))
     phone = Column(String(20), nullable=True)
+    wechat = Column(String(50), nullable=True)
     created_at = Column(DateTime, default=datetime.now)
     last_active = Column(DateTime, default=datetime.now, onupdate=datetime.now)
 
@@ -60,6 +61,8 @@ class AssessmentRecord(Base):
     major = Column(String(50))
     grade = Column(String(20))
     school_tier = Column(String(20))
+    phone = Column(String(20), nullable=True)
+    wechat = Column(String(50), nullable=True)
 
     # 快速自评结果
     quick_answers = Column(JSON, nullable=True)      # 原始答案
@@ -170,6 +173,10 @@ def save_assessment(session_id: str, data: dict):
             record.report_text = data["report_text"]
         if "status" in data:
             record.status = data["status"]
+        if "phone" in data:
+            record.phone = data["phone"]
+        if "wechat" in data:
+            record.wechat = data["wechat"]
 
         record.updated_at = datetime.now()
         db.commit()
