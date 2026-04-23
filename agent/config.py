@@ -4,7 +4,7 @@ from functools import lru_cache
 
 class Settings(BaseSettings):
     # 应用配置
-    app_name: str = "工科导航 - 技能测评 Agent"
+    app_name: str = "荆工智匠 - 技能测评 Agent"
     app_version: str = "0.1.0"
     debug: bool = True
 

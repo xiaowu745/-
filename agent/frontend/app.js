@@ -1,5 +1,5 @@
 /**
- * 工科导航 - 前端应用逻辑
+ * 荆工智匠 - 前端应用逻辑
  */
 
 const API_BASE = window.location.hostname === "localhost"

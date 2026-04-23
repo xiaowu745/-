@@ -1,4 +1,4 @@
-"""工科导航 - 技能测评 Agent 服务入口"""
+"""荆工智匠 - 技能测评 Agent 服务入口"""
 
 from pathlib import Path
 
