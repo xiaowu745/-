@@ -17,7 +17,6 @@ const state = {
     school_tier: "普通本科",
   },
   phone: "",
-  wechat: "",
   // 测评
   sessionId: "",
   questions: [],
@@ -64,7 +63,6 @@ function submitProfile() {
   const gradeEl = document.querySelector("#grade-select .selected");
   const schoolEl = document.querySelector("#school-select .selected");
   const phone = document.getElementById("input-phone").value.trim();
-  const wechat = document.getElementById("input-wechat").value.trim();
 
   if (!nickname) return alert("请输入昵称");
   if (!majorEl) return alert("请选择专业");
@@ -77,7 +75,6 @@ function submitProfile() {
   state.profile.grade = gradeEl.dataset.value;
   state.profile.school_tier = schoolEl ? schoolEl.dataset.value : "普通本科";
   state.phone = phone;
-  state.wechat = wechat;
 
   loadQuestions();
 }
@@ -241,7 +238,7 @@ async function finishQuickAssessment() {
     const res = await fetch(`${API_BASE}/assessment/quick`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ student: state.profile, answers: state.answers, phone: state.phone, wechat: state.wechat }),
+      body: JSON.stringify({ student: state.profile, answers: state.answers, phone: state.phone }),
     });
 
     if (res.ok) {
@@ -471,7 +468,6 @@ function skipToReport() {
 
 function showContactModal() {
   document.getElementById("modal-phone").value = state.phone || "";
-  document.getElementById("modal-wechat").value = state.wechat || "";
   document.getElementById("contact-modal").style.display = "flex";
 }
 
@@ -481,16 +477,14 @@ function closeContactModal() {
 
 function confirmContact() {
   const phone = document.getElementById("modal-phone").value.trim();
-  const wechat = document.getElementById("modal-wechat").value.trim();
 
   if (!phone) return alert("请输入手机号，用于接收测评报告");
   if (!/^1[3-9]\d{9}$/.test(phone)) return alert("请输入正确的11位手机号");
 
   state.phone = phone;
-  state.wechat = wechat;
 
   closeContactModal();
-  saveContactInfo();
+  saveContactInfo(phone);
   generateReport();
 }
 
@@ -502,7 +496,6 @@ async function saveContactInfo() {
       body: JSON.stringify({
         session_id: state.sessionId,
         phone: state.phone,
-        wechat: state.wechat,
         nickname: state.profile.nickname,
         major: state.profile.major,
         grade: state.profile.grade,
