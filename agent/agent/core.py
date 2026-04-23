@@ -75,13 +75,17 @@ class SkillAssessmentAgent:
 
     def _call_llm(self, system: str, messages: list[dict], max_tokens: int = 2000) -> str:
         """调用 MiniMax API（OpenAI 兼容接口）"""
+        import re
         full_messages = [{"role": "system", "content": system}] + messages
         response = self.client.chat.completions.create(
             model=self.model,
             max_tokens=max_tokens,
             messages=full_messages,
         )
-        return response.choices[0].message.content
+        content = response.choices[0].message.content
+        # 过滤掉模型的思考过程 <think>...</think>
+        content = re.sub(r'<think>.*?</think>', '', content, flags=re.DOTALL).strip()
+        return content
 
     # ============================================================
     # 快速测评
