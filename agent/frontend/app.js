@@ -684,6 +684,99 @@ function endInterview() {
   }
 }
 
+// ============ 查看我的报告 ============
+
+async function lookupReports() {
+  const phone = document.getElementById("lookup-phone").value.trim();
+  if (!phone) return alert("请输入手机号");
+  if (!/^1[3-9]\d{9}$/.test(phone)) return alert("请输入正确的11位手机号");
+
+  const listDiv = document.getElementById("report-list");
+  const contentDiv = document.getElementById("report-list-content");
+  const formDiv = document.getElementById("report-lookup-form");
+
+  contentDiv.innerHTML = '<div class="loading-spinner">查询中...</div>';
+  formDiv.style.display = "none";
+  listDiv.style.display = "block";
+
+  try {
+    const res = await fetch(`${API_BASE}/report/by-phone/${phone}`);
+    const data = await res.json();
+
+    if (!data.reports || data.reports.length === 0) {
+      contentDiv.innerHTML = `
+        <div style="text-align:center;padding:40px 0;color:#64748b">
+          <div style="font-size:48px;margin-bottom:16px">📭</div>
+          <p>该手机号暂无测评报告</p>
+          <p style="font-size:13px;margin-top:8px">请先完成一次技能测评</p>
+        </div>`;
+      return;
+    }
+
+    contentDiv.innerHTML = data.reports.map((r, i) => `
+      <div class="report-card" onclick="viewHistoryReport('${r.session_id}')">
+        <div class="report-card-header">
+          <span class="report-card-title">${r.nickname || '未命名'} · ${getMajorName(r.major)}</span>
+          <span class="report-card-score">${r.overall_score || '--'}分</span>
+        </div>
+        <div class="report-card-meta">
+          ${r.grade ? getGradeName(r.grade) + ' · ' : ''}${r.status === 'report_generated' ? '已生成报告' : '已完成测评'} · ${r.created_at || ''}
+        </div>
+      </div>
+    `).join("");
+  } catch {
+    contentDiv.innerHTML = '<div style="text-align:center;padding:40px;color:#ef4444">查询失败，请稍后再试</div>';
+  }
+}
+
+async function viewHistoryReport(sessionId) {
+  showPage("page-report");
+  const container = document.getElementById("report-content");
+  container.innerHTML = '<div class="loading-spinner">报告加载中...</div>';
+
+  try {
+    const res = await fetch(`${API_BASE}/report/view/${sessionId}`);
+    const data = await res.json();
+
+    if (data.report) {
+      container.innerHTML = formatReport(data.report);
+    } else if (data.dimension_scores) {
+      state.quickResult = data;
+      container.innerHTML = formatReport(generateLocalReportFromData(data));
+    } else {
+      container.innerHTML = '<div style="text-align:center;padding:40px;color:#64748b">该报告尚未生成，请先完成深度评估</div>';
+    }
+  } catch {
+    container.innerHTML = '<div style="text-align:center;padding:40px;color:#ef4444">加载失败，请稍后再试</div>';
+  }
+}
+
+function generateLocalReportFromData(data) {
+  const scores = data.dimension_scores || [];
+  const sorted = [...scores].sort((a, b) => (b.score || 0) - (a.score || 0));
+  const best = sorted[0] || {};
+  const worst = sorted[sorted.length - 1] || {};
+
+  return `📊 技能测评报告
+━━━━━━━━━━━━━━━━━━━━
+
+👤 ${data.nickname || ''}
+📚 专业：${getMajorName(data.major || '')} · ${getGradeName(data.grade || '')}
+
+📈 综合得分：${data.overall_score || '--'} / 100
+
+━━━ 各维度分析 ━━━
+
+${scores.map(d => `${d.dimension_name || d.dimension}：${d.score}分 ${"█".repeat(Math.round((d.score||0)/10))}${"░".repeat(10-Math.round((d.score||0)/10))}`).join("\n")}
+
+━━━ 优势与短板 ━━━
+
+✅ 最大优势：${best.dimension_name || ''}（${best.score || 0}分）
+⚠️ 最需提升：${worst.dimension_name || ''}（${worst.score || 0}分）
+
+💡 想获取更详细的分析，请使用 AI 深度评估功能。`;
+}
+
 // ============ 工具函数 ============
 
 function appendMessage(container, role, text) {

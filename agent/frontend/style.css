@@ -498,6 +498,45 @@ body {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ============ 报告列表 ============ */
+
+.report-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.report-card:active { transform: scale(0.98); }
+.report-card:hover { border-color: var(--primary-light); }
+
+.report-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.report-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.report-card-score {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.report-card-meta {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
 /* ============ 弹窗 ============ */
 
 .modal-overlay {
